@@ -100,11 +100,7 @@
                                 <div>
                                     <label class="block text-xs font-semibold text-rose-900 mb-1">項目名稱 <span class="text-rose-500">*</span></label>
                                     <select id="fromItem" required class="w-full rounded-lg border-rose-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500">
-                                        <option value="">請選擇...</option>
-                                        <option value="人事費">人事費</option>
-                                        <option value="業務費">業務費</option>
-                                        <option value="設備費">設備費</option>
-                                        <option value="管理費">管理費</option>
+                                        <option value="">請先選擇門別...</option>
                                     </select>
                                 </div>
                             </div>
@@ -168,11 +164,7 @@
                                 <div>
                                     <label class="block text-xs font-semibold text-emerald-900 mb-1">項目名稱 <span class="text-emerald-500">*</span></label>
                                     <select id="toItem" required class="w-full rounded-lg border-emerald-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-500">
-                                        <option value="">請選擇...</option>
-                                        <option value="人事費">人事費 (注意：人事費只能流出)</option>
-                                        <option value="業務費">業務費</option>
-                                        <option value="設備費">設備費</option>
-                                        <option value="管理費">管理費</option>
+                                        <option value="">請先選擇門別...</option>
                                     </select>
                                 </div>
                             </div>
@@ -411,6 +403,48 @@
                     opt.textContent = proj;
                     toSubProjectSelect.appendChild(opt);
                 });
+            }
+        });
+
+        // 流出門別改變時聯動更新流出項目清單
+        fromCategory.addEventListener('change', function() {
+            const cat = this.value;
+            fromItem.innerHTML = '<option value="">請選擇項目名稱...</option>';
+            fromDetail.innerHTML = '<option value="">請先選擇項目名稱...</option>';
+            
+            if (cat === '經常門') {
+                ['人事費', '業務費', '管理費'].forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item;
+                    opt.textContent = item;
+                    fromItem.appendChild(opt);
+                });
+            } else if (cat === '資本門') {
+                const opt = document.createElement('option');
+                opt.value = '設備費';
+                opt.textContent = '設備費';
+                fromItem.appendChild(opt);
+            }
+        });
+
+        // 流入門別改變時聯動更新流入項目清單
+        toCategory.addEventListener('change', function() {
+            const cat = this.value;
+            toItem.innerHTML = '<option value="">請選擇項目名稱...</option>';
+            toDetail.innerHTML = '<option value="">請先選擇項目名稱...</option>';
+            
+            if (cat === '經常門') {
+                ['人事費', '業務費', '管理費'].forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item;
+                    opt.textContent = item;
+                    toItem.appendChild(opt);
+                });
+            } else if (cat === '資本門') {
+                const opt = document.createElement('option');
+                opt.value = '設備費';
+                opt.textContent = '設備費';
+                toItem.appendChild(opt);
             }
         });
 
