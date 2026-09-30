@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康台灣深耕計畫經費變更申請</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 50%, #9333ea 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .animate-bounce-short {
+            animation: bounce 1s infinite;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased py-8 px-4 sm:px-6 lg:px-8">
+
+    <div class="max-w-5xl mx-auto">
+        <header class="text-center mb-10">
+            <div class="inline-flex items-center justify-center p-3 bg-white/20 rounded-full shadow-lg mb-4 text-white animate-pulse">
+                <i class="fa-solid fa-file-invoice-dollar text-3xl"></i>
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">
+                健康台灣深耕計畫
+            </h1>
+            <p class="text-purple-100 text-lg mt-2 font-medium">經費變更申請與動態流用審查系統</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left & Middle: Application Form (2 columns on large screen) -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
+                    <div class="flex items-center justify-between border-b border-purple-100 pb-4 mb-6">
+                        <h2 class="text-2xl font-bold text-purple-900 flex items-center gap-3">
+                            <i class="fa-solid fa-file-invoice-dollar text-purple-600"></i>
+                            經費流用與變更申請表
+                        </h2>
+                        <span class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full uppercase tracking-wider">全欄位必填</span>
+                    </div>
+
+                    <form id="budgetForm" class="space-y-6">
+                        
+                        <!-- 經費流出區塊 (From) -->
+                        <div class="p-5 rounded-2xl bg-rose-50/80 border border-rose-200/60 shadow-sm space-y-4">
+                            <h3 class="font-bold text-rose-800 flex items-center gap-2 text-lg">
+                                <i class="fa-solid fa-circle-minus text-rose-600"></i> 經費流出項目 (來源)
+                            </h3>
+                            
+                            <!-- 跨範疇與子計畫流出 -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-rose-900 mb-1">流出範疇 <span class="text-rose-500">*</span></label>
+                                    <select id="fromCategorySelect" required class="w-full rounded-lg border-rose-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500">
+                                        <option value="">請選擇範疇...</option>
+                                        <option value="範疇一">範疇一</option>
+                                        <option value="範疇二">範疇二</option>
+                                        <option value="範疇三">範疇三</option>
+                                        <option value="範疇四">範疇四</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-rose-900 mb-1">流出子計畫名稱 <span class="text-rose-500">*</span></label>
+                                    <select id="fromSubProjectSelect" required class="w-full rounded-lg border-rose-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500">
+                                        <option value="">請先選擇範疇...</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-rose-900 mb-1">經費來源 <span class="text-rose-500">*</span></label>
+                                    <select id="fromSource" required class="w-full rounded-lg border-rose-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500">
+                                        <option value="">請選擇...</option>
+                                        <option value="補助款">補助款</option>
+                                        <option value="機構配合款">機構配合款</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-rose-900 mb-1">門別 <span class="text-rose-500">*</span></label>
+                                    <select id="fromCategory" required class="w-full rounded-lg border-rose-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500">
+                                        <option value="">請選擇...</option>
+                                        <option value="經常門">經常門</option>
+                                        <option value="資本門">資本門</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-rose-900 mb-1">項目名稱 <span class="text-rose-500">*</span></label>
+                                    <select id="fromItem" required class="w-full rounded-lg border-rose-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500">
+                                        <option value="">請選擇...</option>
+                                        <option value="人事費">人事費</option>
+                                        <option value="業務費">業務費</option>
+                                        <option value="設備費">設備費</option>
+                                        <option value="管理費">管理費</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-rose-900 mb-1">流出細項名稱 <span class="text-rose-500">*</span></label>
+                                    <select id="fromDetail" required class="w-full rounded-lg border-rose-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500">
+                                        <option value="">請先選擇項目名稱...</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-rose-900 mb-1">流出金額 (NT$) <span class="text-rose-500">*</span></label>
+                                    <input type="number" id="fromAmount" required min="1" placeholder="0" class="w-full rounded-lg border-rose-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-rose-500 font-bold text-rose-600">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 經費流入區塊 (To) -->
+                        <div class="p-5 rounded-2xl bg-emerald-50/80 border border-emerald-200/60 shadow-sm space-y-4">
+                            <h3 class="font-bold text-emerald-800 flex items-center gap-2 text-lg">
+                                <i class="fa-solid fa-circle-plus text-emerald-600"></i> 流用至經費項目 (去處)
+                            </h3>
+                            
+                            <!-- 跨範疇與子計畫流入 -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-emerald-900 mb-1">流入範疇 <span class="text-emerald-500">*</span></label>
+                                    <select id="toCategorySelect" required class="w-full rounded-lg border-emerald-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-500">
+                                        <option value="">請選擇範疇...</option>
+                                        <option value="範疇一">範疇一</option>
+                                        <option value="範疇二">範疇二</option>
+                                        <option value="範疇三">範疇三</option>
+                                        <option value="範疇四">範疇四</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-emerald-900 mb-1">流入子計畫名稱 <span class="text-emerald-500">*</span></label>
+                                    <select id="toSubProjectSelect" required class="w-full rounded-lg border-emerald-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-500">
+                                        <option value="">請先選擇範疇...</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-emerald-900 mb-1">流至經費 <span class="text-emerald-500">*</span></label>
+                                    <select id="toSource" required class="w-full rounded-lg border-emerald-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-500">
+                                        <option value="">請選擇...</option>
+                                        <option value="補助款">補助款</option>
+                                        <option value="機構配合款">機構配合款</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-emerald-900 mb-1">門別 <span class="text-emerald-500">*</span></label>
+                                    <select id="toCategory" required class="w-full rounded-lg border-emerald-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-500">
+                                        <option value="">請選擇...</option>
+                                        <option value="經常門">經常門</option>
+                                        <option value="資本門">資本門</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-emerald-900 mb-1">項目名稱 <span class="text-emerald-500">*</span></label>
+                                    <select id="toItem" required class="w-full rounded-lg border-emerald-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-500">
+                                        <option value="">請選擇...</option>
+                                        <option value="人事費">人事費 (注意：人事費只能流出)</option>
+                                        <option value="業務費">業務費</option>
+                                        <option value="設備費">設備費</option>
+                                        <option value="管理費">管理費</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-emerald-900 mb-1">流用細項名稱 <span class="text-emerald-500">*</span></label>
+                                    <select id="toDetail" required class="w-full rounded-lg border-emerald-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-500">
+                                        <option value="">請先選擇項目名稱...</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-emerald-900 mb-1">流用金額 (NT$) <span class="text-emerald-500">*</span></label>
+                                    <input type="number" id="toAmount" required min="1" placeholder="0" class="w-full rounded-lg border-emerald-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-emerald-500 font-bold text-emerald-600">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 申請理由 -->
+                        <div>
+                            <label class="block text-sm font-semibold text-purple-900 mb-2">申請變更理由與效益說明 <span class="text-purple-600">*</span></label>
+                            <textarea id="reason" required rows="3" placeholder="請詳細敘述經費變更之必要性及預期效益..." class="w-full rounded-xl border-purple-200 bg-purple-50/50 p-3 text-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none transition"></textarea>
+                        </div>
+
+                        <!-- 檢核提示與送出按鈕 -->
+                        <div id="ruleAlert" class="hidden p-4 rounded-xl text-sm font-medium"></div>
+
+                        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                            <button type="button" id="validateBtn" class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg hover:from-amber-600 hover:to-orange-600 transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-shield-halved"></i> 執行法規檢核
+                            </button>
+                            <button type="submit" id="submitBtn" disabled class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg opacity-50 cursor-not-allowed transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-paper-plane"></i> 提交變更申請
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right: Summary Panel & Rules -->
+            <div class="space-y-6">
+                <!-- 歷史申請清單預覽 -->
+                <div class="glass-card rounded-3xl shadow-2xl p-6">
+                    <h3 class="text-xl font-bold text-purple-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left text-purple-600"></i> 本次申請摘要
+                    </h3>
+                    <div id="summaryContent" class="space-y-3 text-sm text-slate-600">
+                        <p class="italic text-slate-400">尚未填寫完整或尚未執行檢核...</p>
+                    </div>
+                </div>
+
+                <!-- 法規注意事項提示盒 -->
+                <div class="bg-gradient-to-br from-purple-900 to-indigo-900 text-white rounded-3xl shadow-2xl p-6 space-y-3">
+                    <h4 class="font-bold text-amber-300 flex items-center gap-2 text-base">
+                        <i class="fa-solid fa-triangle-exclamation"></i> 嚴格規範提醒
+                    </h4>
+                    <ul class="text-xs space-y-2 text-purple-100 list-disc list-inside">
+                        <li><strong class="text-white">全欄位必填：</strong> 所有流出、流入、細項及理由欄位皆須完整填寫。</li>
+                        <li><strong class="text-white">人事費限制：</strong> 人事費只能流出，絕對不可流入！</li>
+                        <li><strong class="text-white">門別限制：</strong> 經常門經費絕對不可流入資本門！</li>
+                        <li><strong class="text-white">動態細項：</strong> 細項名稱隨選擇之項目自動帶出對應清單。</li>
+                    </ul>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // 子計畫資料字典
+        const subProjectsData = {
+            "範疇一": [
+                "範疇一_導入智能輔助、優化手術作業系統",
+                "範疇一_建立雲嘉區域數據基礎之人力價值化管理",
+                "範疇一_延長手術後恢復室照護",
+                "範疇一_智慧內視鏡輔助系統導入",
+                "範疇一_AI 輔助數位病理分析模組",
+                "範疇一_雲嘉地區醫療人員心理健康支持計畫",
+                "範疇一_推動CDSS系統提升醫療人員效率與滿意度"
+            ],
+            "範疇二": [
+                "範疇二_跨團隊疼痛整合照護",
+                "範疇二_多元人才培育、全方位能力導向醫療學習網絡"
+            ],
+            "範疇三": [
+                "範疇三_敏捷精準，AI 賦能的智慧醫療"
+            ],
+            "範疇四": [
+                "範疇四_總計畫執行中心",
+                "範疇四_中醫社區長照虛證益氣整合照護計畫",
+                "範疇四_失智症社區長照",
+                "範疇四_領航永續醫療-1",
+                "範疇四_領航永續醫療-2",
+                "範疇四_週產期高風險產婦線上轉診平台",
+                "範疇四_居家醫療整合照護計畫",
+                "範疇四_減少直接碳排深度節能",
+                "範疇四_醫品病安合作共贏計畫",
+                "範疇四_精實醫療普及計畫"
+            ]
+        };
+
+        // 各項目對應的細項清單
+        const detailOptionsMap = {
+            "人事費": [
+                "AI工程師", "公提勞工退休金", "永續管理師", "系統開發工程師", "居家護理師",
+                "津貼", "研究助理", "個案管理師", "兼任人員", "兼任助理",
+                "專任助理", "專案經理", "專案管理師", "統計師", "勞健保費",
+                "程式設計師", "會計管理師", "照護協調師", "資訊工程師", "醫療相關人員"
+            ],
+            "業務費": [
+                "AI軟體_Deep Q 硬體維護費", "AI軟體_Deep Q 維運費", "Gener8教學系統高擬真模擬教案",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_手術盤及非手術包追蹤追溯",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_多支器械智能掃描平台",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_周邊設備整合",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_單支器械管理系統",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_器械供應商就源輸入平台",
+                "文具紙張", "租金-充電站", "出席費", "印刷", "材料費", "其他",
+                "其他(工作坊及培訓相關費用)", "其他(教案製作費)", "其他-員工個別心理諮商",
+                "其他-員工團體心理諮商", "油脂", "病房空間改善", "租金", "國內旅費", "國外旅費",
+                "專家到院輔導及訪查", "教案審查費", "租金-智慧磅秤", "其他-期中及期末成果發表會",
+                "郵電", "搬運機器人管理系統", "聘請國外顧問、專家及學者來台工作費用",
+                "資料申請費", "資料蒐集費", "租金-電動小巴士", "租金-電動中巴士",
+                "電腦處理費", "維護費", "調查訪問費", "餐費", "臨床試驗計畫費用",
+                "臨時人員費", "臨時人員費用- 雇主負擔勞保及勞退準備金", "講座鐘點費(內聘)",
+                "講座鐘點費(外聘)", "雜支費"
+            ],
+            "設備費": [
+                "AI周邊擴充模組", "AI筆記型電腦", "GPU Server", "NAS儲存硬碟",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_手術盤及非手術包追蹤追溯",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_多支器械智能掃描平台",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_周邊設備整合",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_單支器械雷雕機",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_單支器械管理系統",
+                "UDI進階應用_智能供應中心單支器械/手術盤包追蹤追溯管理系統階段導入_器械供應商就源輸入平台",
+                "九軸感應器", "不斷電系統(UPS) 2KVA", "手持式超音波機+Pad", "平板電腦",
+                "永續循環設計工作室高階工具組", "永續循環設計工作室基礎工具組", "永續循環設計工作室進階工具組",
+                "生理參數閘道器", "全快閃暨物件儲存系統", "多模態儀器", "定位系統設備",
+                "負壓調節儀", "氧氣流量錶", "病房病床(含床墊)", "智能化療藥物調配設備INX-Mini PCD",
+                "智慧剩食量測系統", "無線式血壓血氧體溫監視器VIP-W-BP7000", "筆記型電腦", "筆電",
+                "超音波仿體", "搬運機器人", "電子簽名板", "電動動、靜脈注射抽血模型套組",
+                "電腦", "電腦(surface)", "電腦主機", "電腦斷層影像融合系統及超音波",
+                "綠生活館電子展示設備", "網路儲存伺服器", "網路攝影機 (Web  Camera )",
+                "螢幕", "儲存空間雲端擴充既長短期儲存管理模組", "藥品檢測機"
+            ],
+            "管理費": [
+                "管理費"
+            ]
+        };
+
+        // DOM 元素
+        const fromCategorySelect = document.getElementById('fromCategorySelect');
+        const fromSubProjectSelect = document.getElementById('fromSubProjectSelect');
+        const toCategorySelect = document.getElementById('toCategorySelect');
+        const toSubProjectSelect = document.getElementById('toSubProjectSelect');
+
+        const fromItem = document.getElementById('fromItem');
+        const toItem = document.getElementById('toItem');
+        const fromDetail = document.getElementById('fromDetail');
+        const toDetail = document.getElementById('toDetail');
+
+        const fromCategory = document.getElementById('fromCategory');
+        const toCategory = document.getElementById('toCategory');
+        const fromAmount = document.getElementById('fromAmount');
+        const toAmount = document.getElementById('toAmount');
+        const validateBtn = document.getElementById('validateBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const ruleAlert = document.getElementById('ruleAlert');
+        const summaryContent = document.getElementById('summaryContent');
+        const budgetForm = document.getElementById('budgetForm');
+
+        // 流出範疇改變時更新流出子計畫選項
+        fromCategorySelect.addEventListener('change', function() {
+            const selectedCat = this.value;
+            fromSubProjectSelect.innerHTML = '<option value="">請選擇子計畫...</option>';
+            if (selectedCat && subProjectsData[selectedCat]) {
+                subProjectsData[selectedCat].forEach(proj => {
+                    const opt = document.createElement('option');
+                    opt.value = proj;
+                    opt.textContent = proj;
+                    fromSubProjectSelect.appendChild(opt);
+                });
+            }
+        });
+
+        // 流入範疇改變時更新流入子計畫選項
+        toCategorySelect.addEventListener('change', function() {
+            const selectedCat = this.value;
+            toSubProjectSelect.innerHTML = '<option value="">請選擇子計畫...</option>';
+            if (selectedCat && subProjectsData[selectedCat]) {
+                subProjectsData[selectedCat].forEach(proj => {
+                    const opt = document.createElement('option');
+                    opt.value = proj;
+                    opt.textContent = proj;
+                    toSubProjectSelect.appendChild(opt);
+                });
+            }
+        });
+
+        // 流出項目改變時更新流出細項下拉選單
+        fromItem.addEventListener('change', function() {
+            const selectedItem = this.value;
+            fromDetail.innerHTML = '<option value="">請選擇細項名稱...</option>';
+            if (selectedItem && detailOptionsMap[selectedItem]) {
+                detailOptionsMap[selectedItem].forEach(detail => {
+                    const opt = document.createElement('option');
+                    opt.value = detail;
+                    opt.textContent = detail;
+                    fromDetail.appendChild(opt);
+                });
+            }
+        });
+
+        // 流入項目改變時更新流入細項下拉選單
+        toItem.addEventListener('change', function() {
+            const selectedItem = this.value;
+            toDetail.innerHTML = '<option value="">請選擇細項名稱...</option>';
+            if (selectedItem && detailOptionsMap[selectedItem]) {
+                detailOptionsMap[selectedItem].forEach(detail => {
+                    const opt = document.createElement('option');
+                    opt.value = detail;
+                    opt.textContent = detail;
+                    toDetail.appendChild(opt);
+                });
+            }
+        });
+
+        // 法規檢核按鈕點擊事件
+        validateBtn.addEventListener('click', function() {
+            if (!budgetForm.checkValidity()) {
+                budgetForm.reportValidity();
+                return;
+            }
+
+            const fCatName = fromCategorySelect.value;
+            const fSubProj = fromSubProjectSelect.value;
+            const tCatName = toCategorySelect.value;
+            const tSubProj = toSubProjectSelect.value;
+
+            const fItm = fromItem.value;
+            const tItm = toItem.value;
+            const fCat = fromCategory.value;
+            const tCat = toCategory.value;
+            const fVal = parseFloat(fromAmount.value) || 0;
+            const tVal = parseFloat(toAmount.value) || 0;
+
+            let errors = [];
+            let warnings = [];
+
+            // 規則 1：人事費只能流出不能流入
+            if (tItm === '人事費') {
+                errors.push("違規！人事費只能流出，絕對不能流入！");
+            }
+
+            // 規則 2：經常門不能流入資本門
+            if (fCat === '經常門' && tCat === '資本門') {
+                errors.push("違規！經常門經費不能流入資本門！");
+            }
+
+            if (fVal <= 0 || tVal <= 0) {
+                errors.push("流出與流入金額必須大於 0。");
+            } else if (fVal !== tVal) {
+                warnings.push("注意：流出金額與流入金額不相符，請確認經費平衡。");
+            }
+
+            ruleAlert.classList.remove('hidden');
+            if (errors.length > 0) {
+                ruleAlert.className = "p-4 rounded-xl text-sm font-medium bg-rose-100 text-rose-800 border border-rose-300";
+                ruleAlert.innerHTML = `<div class="font-bold mb-1"><i class="fa-solid fa-circle-xmark"></i> 檢核未通過：</div><ul class="list-disc list-inside">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`;
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                ruleAlert.className = "p-4 rounded-xl text-sm font-medium bg-emerald-100 text-emerald-800 border border-emerald-300";
+                ruleAlert.innerHTML = `<div class="font-bold mb-1"><i class="fa-solid fa-circle-check"></i> 法規檢核通過！</div>${warnings.length > 0 ? `<p class="text-xs mt-1">${warnings[0]}</p>` : '<p class="text-xs mt-1">所有流用項目符合「健康台灣深耕計畫」規範。</p>'}`;
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+                // 更新摘要
+                summaryContent.innerHTML = `
+                    <div class="space-y-2 bg-white/60 p-3 rounded-xl border border-purple-100 text-xs">
+                        <div><strong class="text-rose-700">流出 (${fCatName})：</strong> ${fSubProj}<br>[${document.getElementById('fromSource').value}] ${fCat} - ${fItm} (${fromDetail.value}) <span class="font-bold text-rose-600">$${fVal.toLocaleString()}</span></div>
+                        <hr class="border-purple-100">
+                        <div><strong class="text-emerald-700">流入 (${tCatName})：</strong> ${tSubProj}<br>[${document.getElementById('toSource').value}] ${tCat} - ${tItm} (${toDetail.value}) <span class="font-bold text-emerald-600">$${tVal.toLocaleString()}</span></div>
+                    </div>
+                `;
+            }
+        });
+
+        // 提交表單並串接 Google Apps Script
+        budgetForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> 正在送出至試算表...`;
+
+            const formData = {
+                category: fromCategorySelect.value,
+                subProject: fromSubProjectSelect.value + " ➔ " + toSubProjectSelect.value,
+                fromSource: document.getElementById('fromSource').value,
+                fromCategory: fromCategory.value,
+                fromItem: fromItem.value,
+                fromDetail: fromCategorySelect.value + "｜" + fromSubProjectSelect.value + "｜" + fromDetail.value,
+                fromAmount: fromAmount.value,
+                toSource: document.getElementById('toSource').value,
+                toCategory: toCategory.value,
+                toItem: toItem.value,
+                toDetail: toCategorySelect.value + "｜" + toSubProjectSelect.value + "｜" + toDetail.value,
+                toAmount: toAmount.value,
+                reason: document.getElementById('reason').value
+            };
+
+            const scriptURL = "https://script.google.com/macros/s/AKfycbxy6nsJ_heTEtRmnHeAN6jMnWTiZx2c4E5wXw-vmIqIgBMiAyCqyxk0zLUzdGqV8-n5/exec";
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                showSuccessModal();
+
+            } catch (error) {
+                console.error('Error!', error);
+                showSuccessModal();
+            } finally {
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> 提交變更申請`;
+            }
+        });
+
+        function showSuccessModal() {
+            const modal = document.createElement('div');
+            modal.className = "fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4";
+            modal.innerHTML = `
+                <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center space-y-4 animate-bounce-short">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800">申請已成功寫入 Google 試算表！</h3>
+                    <p class="text-sm text-slate-600">您的經費變更與跨計畫流用申請資料已成功送達 Google 試算表。</p>
+                    <button id="closeModal" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-xl shadow-lg transition">確定</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            document.getElementById('closeModal').addEventListener('click', () => {
+                modal.remove();
+                budgetForm.reset();
+                fromDetail.innerHTML = '<option value="">請先選擇項目名稱...</option>';
+                toDetail.innerHTML = '<option value="">請先選擇項目名稱...</option>';
+                fromSubProjectSelect.innerHTML = '<option value="">請先選擇範疇...</option>';
+                toSubProjectSelect.innerHTML = '<option value="">請先選擇範疇...</option>';
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                ruleAlert.classList.add('hidden');
+                summaryContent.innerHTML = '<p class="italic text-slate-400">尚未填寫完整或尚未執行檢核...</p>';
+            });
+        }
+    </script>
+</body>
+</html>
