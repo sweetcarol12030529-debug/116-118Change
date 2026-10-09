@@ -238,7 +238,6 @@
                 </div>
             </div>
 
-            <!-- Review Section -->
             <div id="reviewSection" class="lg:col-span-3 space-y-6 hidden">
                 <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
                     <div class="flex items-center justify-between border-b border-purple-100 pb-4 mb-6">
@@ -274,7 +273,12 @@
                                 </div>
                                 <div>
                                     <label class="block text-xs font-semibold text-purple-900 mb-1">輸入專屬安全密碼 <span class="text-purple-500">*</span></label>
-                                    <input type="password" id="reviewPinInput" placeholder="請輸入主管密碼" class="w-full rounded-lg border-purple-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-purple-500">
+                                    <div class="relative">
+                                        <input type="password" id="reviewPinInput" placeholder="請輸入主管密碼" class="w-full rounded-lg border-purple-200 bg-white p-2.5 pr-10 text-sm text-slate-700 focus:ring-2 focus:ring-purple-500">
+                                        <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-purple-700 cursor-pointer">
+                                            <i id="togglePasswordIcon" class="fa-solid fa-eye-slash"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="flex items-end">
                                     <button type="button" id="fetchPendingBtn" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-2.5 px-4 rounded-lg shadow transition flex items-center justify-center gap-2 text-sm cursor-pointer">
@@ -298,7 +302,6 @@
         </main>
     </div>
 
-    <!-- Review Modal -->
     <div id="reviewModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 hidden">
         <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl space-y-4">
             <div class="flex items-center justify-between border-b border-purple-100 pb-3">
@@ -446,6 +449,17 @@
             tabApplyBtn.className = "px-6 py-2.5 rounded-xl font-bold text-purple-200 hover:text-white hover:bg-white/10 transition flex items-center gap-2 cursor-pointer";
             reviewSection.classList.remove('hidden');
             applicationSection.classList.add('hidden');
+        });
+
+        // Toggle Password Visibility (Eye Icon)
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+        const reviewPinInput = document.getElementById('reviewPinInput');
+        const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+
+        togglePasswordBtn.addEventListener('click', () => {
+            const isPassword = reviewPinInput.type === 'password';
+            reviewPinInput.type = isPassword ? 'text' : 'password';
+            togglePasswordIcon.className = isPassword ? 'fa-solid fa-eye text-purple-600' : 'fa-solid fa-eye-slash';
         });
 
         const fromCategorySelect = document.getElementById('fromCategorySelect');
@@ -623,7 +637,7 @@
                         <div class="space-y-1">
                             <strong class="text-rose-700 flex items-center gap-1"><i class="fa-solid fa-circle-minus"></i> 經費流出項目 (G欄細項)：</strong>
                             <div class="pl-4 text-slate-700 space-y-0.5">
-                                <div><strong>範疇/子計畫：</strong> ${fCatName} - ${fSubProj}</div>
+                                <div><strong>流出範疇/子計畫：</strong> ${fCatName} - <span class="text-rose-800 font-bold">${fSubProj}</span></div>
                                 <div><strong>經費/門別：</strong> [${document.getElementById('fromSource').value}] ${fCat} - ${fItem}</div>
                                 <div><strong>流出細項名稱 (G欄)：</strong> <span class="font-bold text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">${fromDetail.value}</span></div>
                                 <div><strong>流出金額：</strong> <span class="font-bold text-rose-600 text-sm">$${fVal.toLocaleString()}</span></div>
@@ -633,7 +647,7 @@
                         <div class="space-y-1">
                             <strong class="text-emerald-700 flex items-center gap-1"><i class="fa-solid fa-circle-plus"></i> 流入經費項目 (L欄細項)：</strong>
                             <div class="pl-4 text-slate-700 space-y-0.5">
-                                <div><strong>範疇/子計畫：</strong> ${tCatName} - ${tSubProj}</div>
+                                <div><strong>流入範疇/子計畫：</strong> ${tCatName} - <span class="text-emerald-800 font-bold">${tSubProj}</span></div>
                                 <div><strong>經費/門別：</strong> [${document.getElementById('toSource').value}] ${tCat} - ${tItem}</div>
                                 <div><strong>流入細項名稱 (L欄)：</strong> <span class="font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">${toDetail.value}</span></div>
                                 <div><strong>流入金額：</strong> <span class="font-bold text-emerald-600 text-sm">$${tVal.toLocaleString()}</span></div>
@@ -653,8 +667,10 @@
 
             const payload = {
                 action: "submit",
-                category: fromCategorySelect.value,
-                subProject: fromSubProjectSelect.value,
+                fromCategoryScope: fromCategorySelect.value,
+                fromSubProject: fromSubProjectSelect.value,
+                toCategoryScope: toCategorySelect.value,
+                toSubProject: toSubProjectSelect.value,
                 fromSource: document.getElementById('fromSource').value,
                 fromCategory: fromCategory.value,
                 fromItem: fromItem.value,
@@ -673,14 +689,13 @@
             try {
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Google Apps Script handles no-cors gracefully
+                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(payload)
                 });
 
-                // Since no-cors returns opaque response, assume success if network call finishes
                 showSuccessModal(payload.approverName);
             } catch (err) {
                 console.error(err);
@@ -721,7 +736,6 @@
 
         const fetchPendingBtn = document.getElementById('fetchPendingBtn');
         const reviewSupervisorSelect = document.getElementById('reviewSupervisorSelect');
-        const reviewPinInput = document.getElementById('reviewPinInput');
         const pendingCasesContainer = document.getElementById('pendingCasesContainer');
         const reviewModal = document.getElementById('reviewModal');
         const closeReviewModal = document.getElementById('closeReviewModal');
@@ -732,7 +746,6 @@
 
         let currentActiveRowIndex = null;
 
-        // Fetch pending cases from GAS backend with PIN validation
         fetchPendingBtn.addEventListener('click', async function() {
             const supervisor = reviewSupervisorSelect.value;
             const pin = reviewPinInput.value.trim();
@@ -775,17 +788,18 @@
                                         <span class="px-2.5 py-0.5 bg-amber-100 text-amber-800 text-xs font-bold rounded">${item.status}</span>
                                         <span class="text-xs font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">申請人：${item.applicantName}</span>
                                     </div>
-                                    <h4 class="font-bold text-slate-800 text-base">子計畫：${item.subProject}</h4>
                                     
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-purple-50/60 p-3 rounded-xl border border-purple-100 text-xs">
                                         <div class="space-y-1">
-                                            <span class="font-bold text-rose-700 flex items-center gap-1"><i class="fa-solid fa-circle-minus"></i> 經費流出項目 (G欄)：</span>
+                                            <span class="font-bold text-rose-700 flex items-center gap-1"><i class="fa-solid fa-circle-minus"></i> 經費流出 (子計畫與G欄)：</span>
+                                            <p class="text-rose-900 font-bold bg-rose-50 p-1 rounded">流出子計畫：${item.fromSubProject || '未記錄'}</p>
                                             <p class="text-slate-700"><strong>${item.fromSource}</strong> | ${item.fromCategory} - ${item.fromItem}</p>
                                             <p class="text-rose-900 bg-rose-100/70 p-1.5 rounded border border-rose-200">流出細項名稱：<strong class="text-rose-950">${item.fromDetail || '無'}</strong></p>
                                             <p class="font-bold text-rose-600">金額：$${Number(item.fromAmount).toLocaleString()}</p>
                                         </div>
                                         <div class="space-y-1 border-t md:border-t-0 md:border-l border-purple-200 pt-2 md:pt-0 md:pl-3">
-                                            <span class="font-bold text-emerald-700 flex items-center gap-1"><i class="fa-solid fa-circle-plus"></i> 經費流入項目 (L欄)：</span>
+                                            <span class="font-bold text-emerald-700 flex items-center gap-1"><i class="fa-solid fa-circle-plus"></i> 經費流入 (子計畫與L欄)：</span>
+                                            <p class="text-emerald-900 font-bold bg-emerald-50 p-1 rounded">流入子計畫：${item.toSubProject || '未記錄'}</p>
                                             <p class="text-slate-700"><strong>${item.toSource}</strong> | ${item.toCategory} - ${item.toItem}</p>
                                             <p class="text-emerald-900 bg-emerald-100/70 p-1.5 rounded border border-emerald-200">流入細項名稱：<strong class="text-emerald-950">${item.toDetail || '無'}</strong></p>
                                             <p class="font-bold text-emerald-600">金額：$${Number(item.toAmount).toLocaleString()}</p>
@@ -794,7 +808,7 @@
 
                                     <p class="text-xs text-slate-600"><strong>變更理由：</strong> ${item.reason}</p>
                                 </div>
-                                <button type="button" onclick="openReviewModal(${item.rowIndex}, '${item.applicantName}', '${item.subProject}', '${item.reason.replace(/'/g, "\\'")}', '${item.fromSource}', '${item.fromCategory}', '${item.fromItem}', '${item.fromDetail}', '${item.fromAmount}', '${item.toSource}', '${item.toCategory}', '${item.toItem}', '${item.toDetail}', '${item.toAmount}')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-5 rounded-xl text-sm shadow transition flex items-center gap-2 whitespace-nowrap cursor-pointer self-end lg:self-center">
+                                <button type="button" onclick="openReviewModal(${item.rowIndex}, '${item.applicantName}', '${item.reason.replace(/'/g, "\\'")}', '${item.fromSubProject || ''}', '${item.fromSource}', '${item.fromCategory}', '${item.fromItem}', '${item.fromDetail}', '${item.fromAmount}', '${item.toSubProject || ''}', '${item.toSource}', '${item.toCategory}', '${item.toItem}', '${item.toDetail}', '${item.toAmount}')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-5 rounded-xl text-sm shadow transition flex items-center gap-2 whitespace-nowrap cursor-pointer self-end lg:self-center">
                                     <i class="fa-solid fa-pen-nib"></i> 進行審核
                                 </button>
                             </div>
@@ -810,25 +824,26 @@
             }
         });
 
-        window.openReviewModal = function(rowIndex, applicant, subProj, reason, fSource, fCat, fItem, fDetail, fromAmt, tSource, tCat, tItem, tDetail, toAmt) {
+        window.openReviewModal = function(rowIndex, applicant, reason, fSubProj, fSource, fCat, fItem, fDetail, fromAmt, tSubProj, tSource, tCat, tItem, tDetail, toAmt) {
             currentActiveRowIndex = rowIndex;
             reviewModalDetails.innerHTML = `
                 <div class="grid grid-cols-2 gap-2 pb-2 border-b border-purple-200">
                     <div><strong>列次：</strong> #${rowIndex}</div>
                     <div><strong>申請人：</strong> ${applicant}</div>
-                    <div class="col-span-2"><strong>子計畫：</strong> ${subProj}</div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 py-2">
                     <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 space-y-1.5">
-                        <span class="font-bold text-rose-800 text-xs flex items-center gap-1"><i class="fa-solid fa-circle-minus"></i> 流出項目 (G欄)：</span>
+                        <span class="font-bold text-rose-800 text-xs flex items-center gap-1"><i class="fa-solid fa-circle-minus"></i> 流出項目 (子計畫與G欄)：</span>
+                        <div class="text-xs bg-rose-100/70 p-1 rounded font-bold text-rose-900">流出子計畫：${fSubProj || '未記錄'}</div>
                         <div class="text-xs text-slate-700"><strong>${fSource}</strong> | ${fCat} - ${fItem}</div>
-                        <div class="text-xs bg-rose-100/80 p-1.5 rounded-lg border border-rose-200 text-rose-900">流出細項名稱：<strong class="text-rose-950">${fDetail || '無'}</strong></div>
+                        <div class="text-xs bg-rose-100/80 p-1.5 rounded-lg border border-rose-200 text-rose-900">細項名稱：<strong class="text-rose-950">${fDetail || '無'}</strong></div>
                         <div class="font-bold text-rose-600 text-xs pt-0.5">金額：$${Number(fromAmt).toLocaleString()}</div>
                     </div>
                     <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 space-y-1.5">
-                        <span class="font-bold text-emerald-800 text-xs flex items-center gap-1"><i class="fa-solid fa-circle-plus"></i> 流入項目 (L欄)：</span>
+                        <span class="font-bold text-emerald-800 text-xs flex items-center gap-1"><i class="fa-solid fa-circle-plus"></i> 流入項目 (子計畫與L欄)：</span>
+                        <div class="text-xs bg-emerald-100/70 p-1 rounded font-bold text-emerald-900">流入子計畫：${tSubProj || '未記錄'}</div>
                         <div class="text-xs text-slate-700"><strong>${tSource}</strong> | ${tCat} - ${tItem}</div>
-                        <div class="text-xs bg-emerald-100/80 p-1.5 rounded-lg border border-emerald-200 text-emerald-900">流入細項名稱：<strong class="text-emerald-950">${tDetail || '無'}</strong></div>
+                        <div class="text-xs bg-emerald-100/80 p-1.5 rounded-lg border border-emerald-200 text-emerald-900">細項名稱：<strong class="text-emerald-950">${tDetail || '無'}</strong></div>
                         <div class="font-bold text-emerald-600 text-xs pt-0.5">金額：$${Number(toAmt).toLocaleString()}</div>
                     </div>
                 </div>
