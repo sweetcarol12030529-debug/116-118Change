@@ -12,46 +12,56 @@
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 50%, #7c3aed 100%);
             min-height: 100vh;
+            font-size: 20px; /* 基礎字型大小至少 20px */
         }
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
+        /* 避免加大字型後超出邊框 */
+        select, input, textarea, button, div, span, p {
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        select option {
+            font-size: 18px;
+            padding: 8px;
+        }
     </style>
 </head>
-<body class="text-slate-800 antialiased py-8 px-4 sm:px-6 lg:px-8">
+<body class="text-slate-800 antialiased py-8 px-3 sm:px-6 lg:px-8 text-xl">
 
-    <div class="max-w-5xl mx-auto">
+    <div class="max-w-6xl mx-auto">
         <header class="text-center mb-10">
-            <div class="inline-flex items-center justify-center p-3 bg-white/20 rounded-full shadow-lg mb-4 text-white">
-                <i class="fa-solid fa-user-check text-3xl"></i>
+            <div class="inline-flex items-center justify-center p-4 bg-white/20 rounded-full shadow-lg mb-4 text-white">
+                <i class="fa-solid fa-user-check text-4xl"></i>
             </div>
-            <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">
                 健康台灣深耕計畫
             </h1>
-            <p class="text-purple-100 text-lg mt-2 font-medium">主管 / 計畫負責人審核操作專區</p>
+            <p class="text-purple-100 text-xl sm:text-2xl mt-3 font-medium">主管 / 計畫負責人審核操作專區</p>
         </header>
 
         <main class="space-y-6">
             <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
-                <div class="flex items-center justify-between border-b border-purple-100 pb-4 mb-6">
-                    <h2 class="text-2xl font-bold text-purple-900 flex items-center gap-3">
+                <div class="flex flex-wrap items-center justify-between border-b border-purple-100 pb-4 mb-6 gap-2">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-purple-900 flex items-center gap-3">
                         <i class="fa-solid fa-shield-halved text-purple-600"></i>
                         審核身分登入驗證
                     </h2>
-                    <span class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-semibold rounded-full uppercase tracking-wider">密碼保護</span>
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 text-lg font-bold rounded-full uppercase tracking-wider">密碼保護</span>
                 </div>
 
                 <div class="space-y-6">
-                    <div class="p-5 rounded-2xl bg-purple-50/80 border border-purple-200/60 shadow-sm space-y-4">
-                        <h3 class="font-bold text-purple-900 text-base flex items-center gap-2">
-                            <i class="fa-solid fa-lock"></i> 選擇主管身分並輸入驗證密碼
+                    <div class="p-6 rounded-2xl bg-purple-50/90 border border-purple-200/80 shadow-sm space-y-5">
+                        <h3 class="font-bold text-purple-950 text-2xl flex items-center gap-2">
+                            <i class="fa-solid fa-lock text-purple-700"></i> 選擇主管身分並輸入驗證密碼
                         </h3>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                             <div>
-                                <label class="block text-xs font-semibold text-purple-900 mb-1">選擇主管身分 / 負責人 <span class="text-purple-500">*</span></label>
-                                <select id="reviewSupervisorSelect" class="w-full rounded-lg border-purple-200 bg-white p-2.5 text-sm text-slate-700 focus:ring-2 focus:ring-purple-500">
+                                <label class="block text-xl font-bold text-purple-950 mb-2">選擇主管身分 / 負責人 <span class="text-purple-600">*</span></label>
+                                <select id="reviewSupervisorSelect" class="w-full rounded-xl border-2 border-purple-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
                                     <option value="">請選擇您的主管身分...</option>
                                     <optgroup label="範疇一">
                                         <option value="劉季惠">劉季惠</option><option value="蔡斗元">蔡斗元</option><option value="唐家沛">唐家沛</option><option value="曾志恩">曾志恩</option><option value="林真福">林真福</option><option value="陳可家">陳可家</option><option value="李紀慧">李紀慧</option>
@@ -68,27 +78,27 @@
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-purple-900 mb-1">輸入專屬安全密碼 <span class="text-purple-500">*</span></label>
+                                <label class="block text-xl font-bold text-purple-950 mb-2">輸入專屬安全密碼 <span class="text-purple-600">*</span></label>
                                 <div class="relative">
-                                    <input type="password" id="reviewPinInput" placeholder="請輸入主管密碼" class="w-full rounded-lg border-purple-200 bg-white p-2.5 pr-10 text-sm text-slate-700 focus:ring-2 focus:ring-purple-500">
-                                    <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-purple-700 cursor-pointer">
+                                    <input type="password" id="reviewPinInput" placeholder="請輸入主管密碼" class="w-full rounded-xl border-2 border-purple-200 bg-white p-3 pr-12 text-xl text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
+                                    <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-purple-700 cursor-pointer text-xl">
                                         <i id="togglePasswordIcon" class="fa-solid fa-eye-slash"></i>
                                     </button>
                                 </div>
                             </div>
                             <div class="flex items-end">
-                                <button type="button" id="fetchPendingBtn" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-2.5 px-4 rounded-lg shadow transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                                    <i class="fa-solid fa-rotate"></i> 驗證並載入待審清單
+                                <button type="button" id="fetchPendingBtn" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-extrabold py-3.5 px-5 rounded-xl shadow-lg transition flex items-center justify-center gap-3 text-xl cursor-pointer">
+                                    <i class="fa-solid fa-rotate text-2xl"></i> 驗證並載入待審清單
                                 </button>
                             </div>
                         </div>
                     </div>
 
                     <!-- Pending Cases Container -->
-                    <div id="pendingCasesContainer" class="space-y-4">
-                        <div class="text-center py-8 text-slate-400 bg-white/50 rounded-2xl border border-purple-100">
-                            <i class="fa-solid fa-inbox text-3xl mb-2 text-purple-300"></i>
-                            <p class="text-sm">請先選擇主管身分並輸入對應密碼以查詢待審核案件。</p>
+                    <div id="pendingCasesContainer" class="space-y-5">
+                        <div class="text-center py-10 text-slate-500 bg-white/60 rounded-2xl border border-purple-100">
+                            <i class="fa-solid fa-inbox text-4xl mb-3 text-purple-400"></i>
+                            <p class="text-xl font-medium">請先選擇主管身分並輸入對應密碼以查詢待審核案件。</p>
                         </div>
                     </div>
                 </div>
@@ -97,25 +107,25 @@
     </div>
 
     <!-- Review Modal -->
-    <div id="reviewModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 hidden">
-        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-xl w-full shadow-2xl space-y-4">
-            <div class="flex items-center justify-between border-b border-purple-100 pb-3">
-                <h3 class="text-xl font-bold text-purple-900 flex items-center gap-2">
+    <div id="reviewModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 hidden text-xl">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl w-full shadow-2xl space-y-5 my-8 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-purple-200 pb-4">
+                <h3 class="text-2xl font-extrabold text-purple-950 flex items-center gap-3">
                     <i class="fa-solid fa-signature text-purple-600"></i> 審核表單覆核作業
                 </h3>
-                <button id="closeReviewModal" class="text-slate-400 hover:text-slate-600 text-lg font-bold cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+                <button id="closeReviewModal" class="text-slate-400 hover:text-slate-700 text-2xl font-bold cursor-pointer p-2"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div id="reviewModalDetails" class="space-y-2 text-sm text-slate-600 bg-purple-50 p-4 rounded-xl border border-purple-100 max-h-[60vh] overflow-y-auto"></div>
+            <div id="reviewModalDetails" class="space-y-4 text-xl text-slate-800 bg-purple-50 p-5 rounded-2xl border border-purple-200 leading-relaxed"></div>
             <div>
-                <label class="block text-xs font-semibold text-purple-900 mb-1">主管審核評語 / 意見說明</label>
-                <textarea id="supervisorComment" rows="3" placeholder="請填寫審核意見（若退件請務必說明原因）..." class="w-full rounded-xl border-purple-200 bg-purple-50/50 p-3 text-slate-700 focus:ring-2 focus:ring-purple-500 focus:outline-none transition text-sm"></textarea>
+                <label class="block text-xl font-bold text-purple-950 mb-2">主管審核評語 / 意見說明</label>
+                <textarea id="supervisorComment" rows="3" placeholder="請填寫審核意見（若退件請務必說明原因）..." class="w-full rounded-2xl border-2 border-purple-200 bg-purple-50/50 p-4 text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none transition text-xl font-medium"></textarea>
             </div>
-            <div class="flex gap-4 pt-2">
-                <button type="button" id="rejectActionBtn" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                    <i class="fa-solid fa-circle-xmark"></i> 退件 (Reject)
+            <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                <button type="button" id="rejectActionBtn" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg transition flex items-center justify-center gap-3 text-xl cursor-pointer">
+                    <i class="fa-solid fa-circle-xmark text-2xl"></i> 退件 (Reject)
                 </button>
-                <button type="button" id="approveActionBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition flex items-center justify-center gap-2 text-sm cursor-pointer">
-                    <i class="fa-solid fa-circle-check"></i> 核准 (Approve)
+                <button type="button" id="approveActionBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg transition flex items-center justify-center gap-3 text-xl cursor-pointer">
+                    <i class="fa-solid fa-circle-check text-2xl"></i> 核准 (Approve)
                 </button>
             </div>
         </div>
@@ -126,12 +136,12 @@
 
         function showCustomMessage(message, title = "系統提示") {
             const m = document.createElement('div');
-            m.className = "fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4";
+            m.className = "fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 text-xl";
             m.innerHTML = `
-                <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center space-y-4">
-                    <h3 class="text-xl font-bold text-slate-800">${title}</h3>
-                    <p class="text-sm text-slate-600">${message}</p>
-                    <button id="closeMsgBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 rounded-xl transition cursor-pointer">確定</button>
+                <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl text-center space-y-6">
+                    <h3 class="text-2xl font-extrabold text-slate-900">${title}</h3>
+                    <p class="text-xl text-slate-700 font-medium leading-relaxed">${message}</p>
+                    <button id="closeMsgBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-3.5 rounded-2xl transition cursor-pointer text-xl">確定</button>
                 </div>
             `;
             document.body.appendChild(m);
@@ -173,7 +183,7 @@
                 return;
             }
 
-            pendingCasesContainer.innerHTML = `<div class="text-center py-8 text-purple-600 bg-white/50 rounded-2xl border border-purple-100"><i class="fa-solid fa-spinner fa-spin text-3xl mb-2"></i><p class="text-sm">正在驗證密碼並載入待審清單...</p></div>`;
+            pendingCasesContainer.innerHTML = `<div class="text-center py-10 text-purple-700 bg-white/60 rounded-2xl border border-purple-100 font-bold"><i class="fa-solid fa-spinner fa-spin text-4xl mb-3"></i><p class="text-xl">正在驗證密碼並載入待審清單...</p></div>`;
 
             try {
                 const res = await fetch(`${SCRIPT_URL}?action=getPending&supervisor=${encodeURIComponent(supervisor)}&pin=${encodeURIComponent(pin)}`);
@@ -183,85 +193,85 @@
                     const cases = data.cases || [];
                     if (cases.length === 0) {
                         pendingCasesContainer.innerHTML = `
-                            <div class="text-center py-8 text-slate-400 bg-white/50 rounded-2xl border border-purple-100">
-                                <i class="fa-solid fa-circle-check text-3xl mb-2 text-emerald-500"></i>
-                                <p class="text-sm font-medium">密碼驗證成功！目前沒有屬於「${supervisor}」主管的待審核案件。</p>
+                            <div class="text-center py-10 text-slate-600 bg-white/70 rounded-2xl border border-purple-100 p-6">
+                                <i class="fa-solid fa-circle-check text-4xl mb-3 text-emerald-500"></i>
+                                <p class="text-xl font-bold text-slate-800">密碼驗證成功！目前沒有屬於「${supervisor}」主管的待審核案件。</p>
                             </div>
                         `;
                         return;
                     }
 
-                    let html = `<div class="p-3 bg-emerald-50 text-emerald-800 text-xs font-bold rounded-xl border border-emerald-200 mb-2"><i class="fa-solid fa-shield-check"></i> 密碼驗證成功！目前顯示屬於「${supervisor}」的待審核案件：</div>`;
+                    let html = `<div class="p-4 bg-emerald-50 text-emerald-900 text-xl font-bold rounded-2xl border border-emerald-300 mb-3 flex items-center gap-2"><i class="fa-solid fa-shield-check text-emerald-600 text-2xl"></i> 密碼驗證成功！目前顯示屬於「${supervisor}」的待審核案件：</div>`;
                     cases.forEach(item => {
                         html += `
-                            <div class="bg-white p-5 rounded-2xl border border-purple-100 shadow-sm flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-                                <div class="space-y-2 flex-1">
-                                    <div class="flex items-center gap-2 flex-wrap">
-                                        <span class="px-2.5 py-0.5 bg-purple-100 text-purple-700 text-xs font-bold rounded">列次 #${item.rowIndex}</span>
-                                        <span class="text-xs text-slate-400">${item.timestamp}</span>
-                                        <span class="px-2.5 py-0.5 bg-amber-100 text-amber-800 text-xs font-bold rounded">${item.status}</span>
-                                        <span class="text-xs font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">申請人：${item.applicantName}</span>
+                            <div class="bg-white p-6 rounded-3xl border border-purple-200 shadow-md flex flex-col justify-between items-start gap-5">
+                                <div class="space-y-4 w-full">
+                                    <div class="flex items-center gap-3 flex-wrap">
+                                        <span class="px-3 py-1 bg-purple-100 text-purple-900 text-lg font-extrabold rounded-lg">列次 #${item.rowIndex}</span>
+                                        <span class="text-lg font-medium text-slate-500">${item.timestamp}</span>
+                                        <span class="px-3 py-1 bg-amber-100 text-amber-900 text-lg font-bold rounded-lg">${item.status}</span>
+                                        <span class="text-lg font-bold text-indigo-800 bg-indigo-50 px-3 py-1 rounded-lg border border-indigo-100">申請人：${item.applicantName}</span>
                                     </div>
                                     
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-purple-50/60 p-3 rounded-xl border border-purple-100 text-xs">
-                                        <div class="space-y-1">
-                                            <span class="font-bold text-rose-700 flex items-center gap-1"><i class="fa-solid fa-circle-minus"></i> 經費流出：</span>
-                                            <p class="text-rose-900 font-bold bg-rose-50 p-1 rounded">流出子計畫：${item.fromSubProject || '未記錄'}</p>
-                                            <p class="text-slate-700"><strong>${item.fromSource}</strong> | ${item.fromCategory} - ${item.fromItem}</p>
-                                            <p class="text-rose-900 bg-rose-100/70 p-1.5 rounded border border-rose-200">流出細項名稱：<strong class="text-rose-950">${item.fromDetail || '無'}</strong></p>
-                                            <p class="font-bold text-rose-600">金額：$${Number(item.fromAmount).toLocaleString()}</p>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-purple-50/70 p-5 rounded-2xl border border-purple-200 text-lg">
+                                        <div class="space-y-2">
+                                            <span class="font-bold text-rose-800 text-xl flex items-center gap-2"><i class="fa-solid fa-circle-minus text-rose-600"></i> 經費流出：</span>
+                                            <p class="text-rose-950 font-bold bg-rose-100/80 p-2 rounded-xl">流出子計畫：${item.fromSubProject || '未記錄'}</p>
+                                            <p class="text-slate-800 font-medium"><strong>${item.fromSource}</strong> | ${item.fromCategory} - ${item.fromItem}</p>
+                                            <p class="text-rose-950 bg-rose-100 p-2 rounded-xl border border-rose-200">流出細項名稱：<strong class="text-rose-950">${item.fromDetail || '無'}</strong></p>
+                                            <p class="font-extrabold text-rose-700 text-xl">金額：$${Number(item.fromAmount).toLocaleString()}</p>
                                         </div>
-                                        <div class="space-y-1 border-t md:border-t-0 md:border-l border-purple-200 pt-2 md:pt-0 md:pl-3">
-                                            <span class="font-bold text-emerald-700 flex items-center gap-1"><i class="fa-solid fa-circle-plus"></i> 經費流入：</span>
-                                            <p class="text-emerald-900 font-bold bg-emerald-50 p-1 rounded">流入子計畫：${item.toSubProject || '未記錄'}</p>
-                                            <p class="text-slate-700"><strong>${item.toSource}</strong> | ${item.toCategory} - ${item.toItem}</p>
-                                            <p class="text-emerald-900 bg-emerald-100/70 p-1.5 rounded border border-emerald-200">流入細項名稱：<strong class="text-emerald-950">${item.toDetail || '無'}</strong></p>
-                                            <p class="font-bold text-emerald-600">金額：$${Number(item.toAmount).toLocaleString()}</p>
+                                        <div class="space-y-2 border-t md:border-t-0 md:border-l border-purple-200 pt-3 md:pt-0 md:pl-4">
+                                            <span class="font-bold text-emerald-800 text-xl flex items-center gap-2"><i class="fa-solid fa-circle-plus text-emerald-600"></i> 經費流入：</span>
+                                            <p class="text-emerald-950 font-bold bg-emerald-100/80 p-2 rounded-xl">流入子計畫：${item.toSubProject || '未記錄'}</p>
+                                            <p class="text-slate-800 font-medium"><strong>${item.toSource}</strong> | ${item.toCategory} - ${item.toItem}</p>
+                                            <p class="text-emerald-950 bg-emerald-100 p-2 rounded-xl border border-emerald-200">流入細項名稱：<strong class="text-emerald-950">${item.toDetail || '無'}</strong></p>
+                                            <p class="font-extrabold text-emerald-700 text-xl">金額：$${Number(item.toAmount).toLocaleString()}</p>
                                         </div>
                                     </div>
 
-                                    <p class="text-xs text-slate-600"><strong>變更理由：</strong> ${item.reason}</p>
+                                    <p class="text-lg text-slate-800 font-medium leading-relaxed"><strong>變更理由：</strong> ${item.reason}</p>
                                 </div>
-                                <button type="button" onclick="openReviewModal(${item.rowIndex}, '${item.applicantName}', '${item.reason.replace(/'/g, "\\'")}', '${item.fromSubProject || ''}', '${item.fromSource}', '${item.fromCategory}', '${item.fromItem}', '${item.fromDetail}', '${item.fromAmount}', '${item.toSubProject || ''}', '${item.toSource}', '${item.toCategory}', '${item.toItem}', '${item.toDetail}', '${item.toAmount}')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-5 rounded-xl text-sm shadow transition flex items-center gap-2 whitespace-nowrap cursor-pointer self-end lg:self-center">
-                                    <i class="fa-solid fa-pen-nib"></i> 進行審核
+                                <button type="button" onclick="openReviewModal(${item.rowIndex}, '${item.applicantName}', '${item.reason.replace(/'/g, "\\'")}', '${item.fromSubProject || ''}', '${item.fromSource}', '${item.fromCategory}', '${item.fromItem}', '${item.fromDetail}', '${item.fromAmount}', '${item.toSubProject || ''}', '${item.toSource}', '${item.toCategory}', '${item.toItem}', '${item.toDetail}', '${item.toAmount}')" class="w-full sm:w-auto bg-purple-700 hover:bg-purple-800 text-white font-extrabold py-3.5 px-6 rounded-2xl text-xl shadow-lg transition flex items-center justify-center gap-2 whitespace-nowrap cursor-pointer self-end">
+                                    <i class="fa-solid fa-pen-nib text-xl"></i> 進行審核
                                 </button>
                             </div>
                         `;
                     });
                     pendingCasesContainer.innerHTML = html;
                 } else {
-                    pendingCasesContainer.innerHTML = `<div class="p-4 text-rose-700 text-sm bg-rose-50 rounded-xl border border-rose-200 font-medium"><i class="fa-solid fa-circle-xmark"></i> 驗證失敗：${data.message}</div>`;
+                    pendingCasesContainer.innerHTML = `<div class="p-5 text-rose-800 text-xl bg-rose-100 rounded-2xl border border-rose-300 font-bold"><i class="fa-solid fa-circle-xmark text-rose-600"></i> 驗證失敗：${data.message}</div>`;
                 }
             } catch (err) {
                 console.error(err);
-                pendingCasesContainer.innerHTML = `<div class="p-4 text-rose-600 text-sm bg-rose-50 rounded-xl">連線錯誤，無法載入清單。</div>`;
+                pendingCasesContainer.innerHTML = `<div class="p-5 text-rose-800 text-xl bg-rose-100 rounded-2xl font-bold">連線錯誤，無法載入清單。</div>`;
             }
         });
 
         window.openReviewModal = function(rowIndex, applicant, reason, fSubProj, fSource, fCat, fItem, fDetail, fromAmt, tSubProj, tSource, tCat, tItem, tDetail, toAmt) {
             currentActiveRowIndex = rowIndex;
             reviewModalDetails.innerHTML = `
-                <div class="grid grid-cols-2 gap-2 pb-2 border-b border-purple-200">
+                <div class="grid grid-cols-2 gap-3 pb-3 border-b border-purple-200 font-bold">
                     <div><strong>列次：</strong> #${rowIndex}</div>
                     <div><strong>申請人：</strong> ${applicant}</div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 py-2">
-                    <div class="bg-rose-50 p-3 rounded-xl border border-rose-200 space-y-1.5">
-                        <span class="font-bold text-rose-800 text-xs flex items-center gap-1"><i class="fa-solid fa-circle-minus"></i> 流出項目：</span>
-                        <div class="text-xs bg-rose-100/70 p-1 rounded font-bold text-rose-900">流出子計畫：${fSubProj || '未記錄'}</div>
-                        <div class="text-xs text-slate-700"><strong>${fSource}</strong> | ${fCat} - ${fItem}</div>
-                        <div class="text-xs bg-rose-100/80 p-1.5 rounded-lg border border-rose-200 text-rose-900">細項名稱：<strong class="text-rose-950">${fDetail || '無'}</strong></div>
-                        <div class="font-bold text-rose-600 text-xs pt-0.5">金額：$${Number(fromAmt).toLocaleString()}</div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 py-2">
+                    <div class="bg-rose-50 p-4 rounded-2xl border border-rose-200 space-y-2">
+                        <span class="font-extrabold text-rose-900 text-lg flex items-center gap-1.5"><i class="fa-solid fa-circle-minus text-rose-600"></i> 流出項目：</span>
+                        <div class="text-base bg-rose-100/90 p-2 rounded-lg font-bold text-rose-950">流出子計畫：${fSubProj || '未記錄'}</div>
+                        <div class="text-base text-slate-800 font-medium"><strong>${fSource}</strong> | ${fCat} - ${fItem}</div>
+                        <div class="text-base bg-rose-100 p-2 rounded-lg border border-rose-200 text-rose-950 font-bold">細項名稱：${fDetail || '無'}</div>
+                        <div class="font-extrabold text-rose-700 text-lg pt-1">金額：$${Number(fromAmt).toLocaleString()}</div>
                     </div>
-                    <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200 space-y-1.5">
-                        <span class="font-bold text-emerald-800 text-xs flex items-center gap-1"><i class="fa-solid fa-circle-plus"></i> 流入項目：</span>
-                        <div class="text-xs bg-emerald-100/70 p-1 rounded font-bold text-emerald-900">流入子計畫：${tSubProj || '未記錄'}</div>
-                        <div class="text-xs text-slate-700"><strong>${tSource}</strong> | ${tCat} - ${tItem}</div>
-                        <div class="text-xs bg-emerald-100/80 p-1.5 rounded-lg border border-emerald-200 text-emerald-900">細項名稱：<strong class="text-emerald-950">${tDetail || '無'}</strong></div>
-                        <div class="font-bold text-emerald-600 text-xs pt-0.5">金額：$${Number(toAmt).toLocaleString()}</div>
+                    <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200 space-y-2">
+                        <span class="font-extrabold text-emerald-900 text-lg flex items-center gap-1.5"><i class="fa-solid fa-circle-plus text-emerald-600"></i> 流入項目：</span>
+                        <div class="text-base bg-emerald-100/90 p-2 rounded-lg font-bold text-emerald-950">流入子計畫：${tSubProj || '未記錄'}</div>
+                        <div class="text-base text-slate-800 font-medium"><strong>${tSource}</strong> | ${tCat} - ${tItem}</div>
+                        <div class="text-base bg-emerald-100 p-2 rounded-lg border border-emerald-200 text-emerald-950 font-bold">細項名稱：${tDetail || '無'}</div>
+                        <div class="font-extrabold text-emerald-700 text-lg pt-1">金額：$${Number(toAmt).toLocaleString()}</div>
                     </div>
                 </div>
-                <div class="pt-1"><strong>變更理由與效益：</strong><br><span class="text-slate-700 bg-white p-2.5 rounded-xl block mt-1 border border-purple-100">${reason}</span></div>
+                <div class="pt-2"><strong>變更理由與效益：</strong><br><span class="text-slate-800 bg-white p-3 rounded-xl block mt-2 border border-purple-200 font-medium">${reason}</span></div>
             `;
             supervisorComment.value = "";
             reviewModal.classList.remove('hidden');
