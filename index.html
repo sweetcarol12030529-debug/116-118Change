@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>健康台灣深耕計畫 - 經費變更申請系統</title>
+    <title>健康台灣深耕計畫 - 經費變更線上申請系統</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 50%, #9333ea 100%);
+            background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 50%, #7c3aed 100%);
             min-height: 100vh;
-            font-size: 20px; /* 基礎字型大小設定至少為 20px */
+            font-size: 20px;
         }
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
-        /* 確保字體加大後內容不溢出且能自動換行 */
         select, input, textarea, button, div, span, p, label {
             word-break: break-word;
             overflow-wrap: break-word;
@@ -30,10 +29,10 @@
         }
     </style>
 </head>
-<body class="text-slate-800 antialiased py-8 px-3 sm:px-6 lg:px-8 text-xl">
+<body class="text-slate-800 antialiased py-6 px-3 sm:px-6 lg:px-8 text-xl">
 
-    <div class="max-w-6xl mx-auto">
-        <header class="text-center mb-10">
+    <div class="max-w-6xl mx-auto space-y-6">
+        <header class="text-center mb-8">
             <div class="inline-flex items-center justify-center p-4 bg-white/20 rounded-full shadow-lg mb-4 text-white animate-pulse">
                 <i class="fa-solid fa-file-invoice-dollar text-4xl"></i>
             </div>
@@ -51,11 +50,10 @@
                             <i class="fa-solid fa-pen-to-square text-purple-600"></i>
                             填寫經費變更申請表
                         </h2>
-                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-lg font-bold rounded-full uppercase tracking-wider">連線穩定</span>
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-lg font-bold rounded-full uppercase tracking-wider">線上填報</span>
                     </div>
 
                     <form id="budgetForm" class="space-y-8">
-                        
                         <!-- Outflow Section -->
                         <div class="p-6 rounded-2xl bg-rose-50/90 border border-rose-200/80 shadow-sm space-y-5">
                             <h3 class="font-bold text-rose-900 flex items-center gap-2 text-2xl">
@@ -119,7 +117,6 @@
                             </div>
                         </div>
 
-                        <!-- Inflow Section -->
                         <div class="p-6 rounded-2xl bg-emerald-50/90 border border-emerald-200/80 shadow-sm space-y-5">
                             <h3 class="font-bold text-emerald-900 flex items-center gap-2 text-2xl">
                                 <i class="fa-solid fa-circle-plus text-emerald-600"></i> 流用至經費項目 (去處)
@@ -219,15 +216,36 @@
                 </div>
             </div>
 
-            <!-- Summary Sidebar -->
             <div class="space-y-6">
-                <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8 sticky top-8">
+                <!-- Summary Card -->
+                <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
                     <h3 class="text-2xl font-bold text-purple-950 mb-5 flex items-center gap-3">
                         <i class="fa-solid fa-clock-rotate-left text-purple-600"></i> 本次申請摘要
                     </h3>
                     <div id="summaryContent" class="space-y-4 text-xl text-slate-700">
                         <p class="italic text-slate-400 font-medium">尚未填寫完整或尚未執行檢核...</p>
                     </div>
+                </div>
+
+                <!-- Case Query Card (NEW FUNCTION) -->
+                <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
+                    <h3 class="text-2xl font-bold text-purple-950 mb-4 flex items-center gap-3">
+                        <i class="fa-solid fa-magnifying-glass text-purple-600"></i> 申請案件進度查詢
+                    </h3>
+                    <p class="text-base text-slate-600 mb-4 font-medium">可輸入您的「申請人姓名」以查詢過往提交案件的審核狀態與紀錄。</p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-lg font-bold text-purple-950 mb-1">申請人姓名</label>
+                            <input type="text" id="queryApplicantName" placeholder="請輸入申請人姓名..." class="w-full rounded-xl border-2 border-purple-200 bg-white p-3 text-lg text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
+                        </div>
+                        <button type="button" id="queryCasesBtn" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-extrabold py-3.5 px-5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-lg cursor-pointer">
+                            <i class="fa-solid fa-search"></i> 查詢申請案件
+                        </button>
+                    </div>
+
+                    <!-- Query Results Box -->
+                    <div id="queryResultContainer" class="mt-5 space-y-3"></div>
                 </div>
             </div>
         </main>
@@ -522,6 +540,70 @@
                 summaryContent.innerHTML = '<p class="italic text-slate-400 font-medium">尚未填寫完整或尚未執行檢核...</p>';
             });
         }
+
+        const queryCasesBtn = document.getElementById('queryCasesBtn');
+        const queryApplicantName = document.getElementById('queryApplicantName');
+        const queryResultContainer = document.getElementById('queryResultContainer');
+
+        queryCasesBtn.addEventListener('click', async function() {
+            const name = queryApplicantName.value.trim();
+            if (!name) {
+                showCustomMessage("請輸入欲查詢的申請人姓名！", "提示");
+                return;
+            }
+
+            queryResultContainer.innerHTML = `
+                <div class="text-center py-6 text-purple-700 bg-purple-50 rounded-2xl border border-purple-200">
+                    <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
+                    <p class="text-base font-bold">正在查詢「${name}」的案件進度...</p>
+                </div>
+            `;
+
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=queryByApplicant&applicant=${encodeURIComponent(name)}`);
+                const data = await res.json();
+
+                if (data.status === "success") {
+                    const cases = data.cases || [];
+                    if (cases.length === 0) {
+                        queryResultContainer.innerHTML = `
+                            <div class="p-4 bg-slate-100 text-slate-700 text-base font-medium rounded-xl text-center border border-slate-200">
+                                查無「${name}」提交的變更申請紀錄。
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    let html = `<div class="text-base font-bold text-slate-700 mb-2">找到 ${cases.length} 筆案件紀錄：</div>`;
+                    cases.forEach(item => {
+                        let statusBadgeClass = "bg-amber-100 text-amber-800 border-amber-300";
+                        if (item.status === '核准' || item.status === '同意') statusBadgeClass = "bg-emerald-100 text-emerald-800 border-emerald-300";
+                        if (item.status === '退件' || item.status === '不同意') statusBadgeClass = "bg-rose-100 text-rose-800 border-rose-300";
+
+                        html += `
+                            <div class="bg-white p-4 rounded-2xl border border-purple-200 shadow-sm space-y-2 text-base">
+                                <div class="flex items-center justify-between flex-wrap gap-2">
+                                    <span class="font-extrabold text-purple-900">#${item.rowIndex} (${item.timestamp || '無時間'})</span>
+                                    <span class="px-2.5 py-0.5 text-xs font-extrabold rounded-full border ${statusBadgeClass}">${item.status || '待審核'}</span>
+                                </div>
+                                <div class="text-slate-700 text-sm space-y-1 bg-purple-50/50 p-2.5 rounded-xl border border-purple-100">
+                                    <div><strong class="text-rose-800">流出：</strong> ${item.fromDetail || '細項'} ($${Number(item.fromAmount || 0).toLocaleString()})</div>
+                                    <div><strong class="text-emerald-800">流入：</strong> ${item.toDetail || '細項'} ($${Number(item.toAmount || 0).toLocaleString()})</div>
+                                    <div><strong>審核主管：</strong> ${item.approverName || '未指定'}</div>
+                                    ${item.supervisorComment ? `<div class="mt-1 pt-1 border-t border-purple-200 text-purple-900"><strong>主管意見：</strong> ${item.supervisorComment}</div>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    queryResultContainer.innerHTML = html;
+                } else {
+                    queryResultContainer.innerHTML = `<div class="p-4 bg-rose-50 text-rose-800 text-base font-bold rounded-xl border border-rose-200">查詢失敗：${data.message}</div>`;
+                }
+            } catch (err) {
+                console.error(err);
+                queryResultContainer.innerHTML = `<div class="p-4 bg-rose-50 text-rose-800 text-base font-bold rounded-xl border border-rose-200">網路連線問題，無法連線至後端查詢。</div>`;
+            }
+        });
     </script>
 </body>
 </html>
