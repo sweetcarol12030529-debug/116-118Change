@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>健康台灣深耕計畫 - 經費變更線上申請系統</title>
+    <!-- Tailwind CSS v4 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome 圖示庫 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter 字型 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
@@ -32,6 +35,7 @@
 <body class="text-slate-800 antialiased py-6 px-3 sm:px-6 lg:px-8 text-xl">
 
     <div class="max-w-6xl mx-auto space-y-6">
+        <!-- 頁頭資訊 -->
         <header class="text-center mb-8">
             <div class="inline-flex items-center justify-center p-4 bg-white/20 rounded-full shadow-lg mb-4 text-white animate-pulse">
                 <i class="fa-solid fa-file-invoice-dollar text-4xl"></i>
@@ -43,6 +47,7 @@
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- 左側/上方：經費變更申請表單 -->
             <div class="lg:col-span-2 space-y-6">
                 <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
                     <div class="flex flex-wrap items-center justify-between border-b border-purple-100 pb-4 mb-6 gap-2">
@@ -54,7 +59,7 @@
                     </div>
 
                     <form id="budgetForm" class="space-y-8">
-                        <!-- Outflow Section -->
+                        <!-- 流出項目區塊 -->
                         <div class="p-6 rounded-2xl bg-rose-50/90 border border-rose-200/80 shadow-sm space-y-5">
                             <h3 class="font-bold text-rose-900 flex items-center gap-2 text-2xl">
                                 <i class="fa-solid fa-circle-minus text-rose-600"></i> 經費流出項目 (來源)
@@ -117,6 +122,7 @@
                             </div>
                         </div>
 
+                        <!-- 流入項目區塊 -->
                         <div class="p-6 rounded-2xl bg-emerald-50/90 border border-emerald-200/80 shadow-sm space-y-5">
                             <h3 class="font-bold text-emerald-900 flex items-center gap-2 text-2xl">
                                 <i class="fa-solid fa-circle-plus text-emerald-600"></i> 流用至經費項目 (去處)
@@ -179,9 +185,20 @@
                             </div>
                         </div>
 
-                        <div>
-                            <label class="block text-xl font-bold text-purple-950 mb-2">申請變更理由與效益說明 <span class="text-purple-600">*</span></label>
-                            <textarea id="reason" required rows="4" placeholder="請詳細敘述經費變更之必要性及預期效益..." class="w-full rounded-xl border-2 border-purple-200 bg-purple-50/50 p-4 text-xl text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none transition font-medium"></textarea>
+                        <!-- 理由與簽核設定區塊 -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xl font-bold text-purple-950 mb-2">變更類型 <span class="text-purple-600">*</span></label>
+                                <select id="reasonType" required class="w-full rounded-xl border-2 border-purple-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
+                                    <option value="">請選擇變更類型...</option>
+                                    <option value="政策性變更(主管機關政策、審查意見或院長要求)">1. 政策性變更 (主管機關政策、審查意見或院長要求)</option>
+                                    <option value="自主性變更(執行單位依實際執行需求提出)">2. 自主性變更 (執行單位依實際執行需求提出)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xl font-bold text-purple-950 mb-2">申請變更理由與效益說明 <span class="text-purple-600">*</span></label>
+                                <textarea id="reason" required rows="4" placeholder="請詳細敘述經費變更之必要性及預期效益..." class="w-full rounded-xl border-2 border-purple-200 bg-purple-50/50 p-4 text-xl text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none transition font-medium"></textarea>
+                            </div>
                         </div>
 
                         <div class="p-6 rounded-2xl bg-indigo-50/90 border border-indigo-200/80 shadow-sm space-y-5">
@@ -216,8 +233,9 @@
                 </div>
             </div>
 
+            <!-- 右側：摘要與查詢欄位 -->
             <div class="space-y-6">
-                <!-- Summary Card -->
+                <!-- 本次申請摘要卡片 -->
                 <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
                     <h3 class="text-2xl font-bold text-purple-950 mb-5 flex items-center gap-3">
                         <i class="fa-solid fa-clock-rotate-left text-purple-600"></i> 本次申請摘要
@@ -227,7 +245,7 @@
                     </div>
                 </div>
 
-                <!-- Case Query Card (NEW FUNCTION) -->
+                <!-- 申請案件進度查詢卡片 -->
                 <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
                     <h3 class="text-2xl font-bold text-purple-950 mb-4 flex items-center gap-3">
                         <i class="fa-solid fa-magnifying-glass text-purple-600"></i> 申請案件進度查詢
@@ -244,7 +262,7 @@
                         </button>
                     </div>
 
-                    <!-- Query Results Box -->
+                    <!-- 查詢結果放置區 -->
                     <div id="queryResultContainer" class="mt-5 space-y-3"></div>
                 </div>
             </div>
@@ -423,6 +441,7 @@
             const tCat = toCategory.value;
             const fVal = parseFloat(fromAmount.value) || 0;
             const tVal = parseFloat(toAmount.value) || 0;
+            const rType = document.getElementById('reasonType').value;
 
             let errors = [];
             let warnings = [];
@@ -453,6 +472,11 @@
 
                 summaryContent.innerHTML = `
                     <div class="space-y-4 bg-white/70 p-5 rounded-2xl border border-purple-200 text-lg leading-relaxed">
+                        <div>
+                            <strong class="text-purple-900 text-lg">變更類型：</strong>
+                            <span class="font-bold text-purple-950 block bg-purple-100 p-2 rounded-xl mt-1">${rType}</span>
+                        </div>
+                        <hr class="border-purple-200">
                         <div class="space-y-1">
                             <strong class="text-rose-800 text-xl flex items-center gap-2"><i class="fa-solid fa-circle-minus text-rose-600"></i> 經費流出項目：</strong>
                             <div class="pl-2 text-slate-800 space-y-1 mt-1">
@@ -480,6 +504,9 @@
             submitBtn.disabled = true;
             submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-2xl"></i> 正在傳送至後端與寄信...`;
 
+            const reasonTypeVal = document.getElementById('reasonType').value;
+            const reasonDetailVal = document.getElementById('reason').value;
+
             const payload = {
                 action: "submit",
                 fromCategoryScope: fromCategorySelect.value,
@@ -496,7 +523,8 @@
                 toItem: toItem.value,
                 toDetail: toDetail.value,
                 toAmount: toAmount.value,
-                reason: document.getElementById('reason').value,
+                reasonType: reasonTypeVal,
+                reason: reasonDetailVal,
                 applicantName: document.getElementById('applicantName').value,
                 approverName: approverNameSelect.value
             };
