@@ -82,9 +82,9 @@
                 <div class="bg-white/95 text-purple-950 px-4 py-2 rounded-xl shadow-md font-extrabold text-base flex items-center gap-2">
                     <i class="fa-solid fa-circle-user text-purple-600 text-xl"></i>
                     <span>目前登入：<span id="displayUserName" class="text-indigo-700">未登入</span></span>
-                    <span id="displayUserRoleBadge" class="hidden px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300 rounded-md text-xs font-extrabold">管理者</span>
+                    <span id="displayUserRoleBadge" style="display: none;" class="hidden px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300 rounded-md text-xs font-extrabold">管理者</span>
                 </div>
-                <button type="button" id="openAdminPanelBtn" class="hidden bg-amber-500 hover:bg-amber-600 text-white text-base font-extrabold py-2 px-4 rounded-xl shadow-md transition cursor-pointer inline-flex items-center gap-2">
+                <button type="button" id="openAdminPanelBtn" style="display: none;" class="hidden bg-amber-500 hover:bg-amber-600 text-white text-base font-extrabold py-2 px-4 rounded-xl shadow-md transition cursor-pointer items-center gap-2">
                     <i class="fa-solid fa-users-gear"></i> 帳號管理
                 </button>
                 <button type="button" id="logoutBtn" class="bg-rose-600/90 hover:bg-rose-700 text-white text-base font-bold py-2 px-4 rounded-xl shadow-md transition cursor-pointer inline-flex items-center gap-2">
@@ -416,13 +416,18 @@
             formApplicantDisplay.textContent = authObj.userName;
             document.getElementById('queryApplicantName').value = authObj.userName;
             
-            // 判斷是否為管理者，顯示專屬帳號管理按鈕
-            if (authObj.role === "管理者") {
+            // 嚴格判斷是否為管理者，一般使用者完全隱藏帳號管理按鈕與彈窗
+            if (authObj && authObj.role === "管理者") {
                 displayUserRoleBadge.classList.remove('hidden');
+                displayUserRoleBadge.style.display = 'inline-block';
                 openAdminPanelBtn.classList.remove('hidden');
+                openAdminPanelBtn.style.display = 'inline-flex';
             } else {
                 displayUserRoleBadge.classList.add('hidden');
+                displayUserRoleBadge.style.display = 'none';
                 openAdminPanelBtn.classList.add('hidden');
+                openAdminPanelBtn.style.display = 'none';
+                adminUsersModal.classList.add('hidden');
             }
 
             authGateModal.classList.add('hidden');
@@ -499,7 +504,10 @@
             displayUserName.textContent = "未登入";
             formApplicantDisplay.textContent = "未登入";
             displayUserRoleBadge.classList.add('hidden');
+            displayUserRoleBadge.style.display = 'none';
             openAdminPanelBtn.classList.add('hidden');
+            openAdminPanelBtn.style.display = 'none';
+            adminUsersModal.classList.add('hidden');
             mainAppContainer.classList.add('hidden');
             authGateModal.classList.remove('hidden');
         });
@@ -672,6 +680,11 @@
         });
 
         openAdminPanelBtn.addEventListener('click', () => {
+            // 再次嚴格驗證僅管理者可開啟帳號管理視窗
+            if (!currentAuth || currentAuth.role !== "管理者") {
+                showCustomMessage("權限不足：僅管理者帳號可使用帳號管理功能！", "存取拒絕");
+                return;
+            }
             clearAdminForm();
             adminUsersModal.classList.remove('hidden');
             loadAdminUsersList();
