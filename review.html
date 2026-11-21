@@ -73,29 +73,24 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             <div>
-                                <label class="block text-sm font-bold text-purple-950 mb-1.5">選擇主管身分 / 負責人 <span class="text-purple-600">*</span></label>
-                                <select id="reviewSupervisorSelect" class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
-                                    <option value="">請選擇您的主管身分...</option>
-                                    <optgroup label="範疇一">
-                                        <option value="劉季惠">劉季惠</option><option value="蔡斗元">蔡斗元</option><option value="唐家沛">唐家沛</option><option value="曾志恩">曾志恩</option><option value="林真福">林真福</option><option value="陳可家">陳可家</option><option value="李紀慧">李紀慧</option>
-                                    </optgroup>
-                                    <optgroup label="範疇二">
-                                        <option value="陳弘美">陳弘美</option><option value="李宜恭">李宜恭</option>
-                                    </optgroup>
-                                    <optgroup label="範疇三">
-                                        <option value="黃智瑋">黃智瑋</option><option value="林庭光">林庭光</option>
-                                    </optgroup>
-                                    <optgroup label="範疇四">
-                                        <option value="葉明憲">葉明憲</option><option value="楊佳瑜">楊佳瑜</option><option value="鄭秀晶">鄭秀晶</option><option value="陳佳蓉">陳佳蓉</option><option value="陳敬森">陳敬森</option><option value="顏貴珍">顏貴珍</option><option value="陳志偉">陳志偉</option><option value="劉鎮榮">劉鎮榮</option>
-                                    </optgroup>
+                                <label class="block text-sm font-bold text-purple-950 mb-1.5">1. 選擇簽核角色 <span class="text-purple-600">*</span></label>
+                                <select id="reviewRoleSelect" class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
+                                    <option value="子計畫負責人">第一關：子計畫負責人</option>
+                                    <option value="各範疇副召集人">第二關：各範疇副召集人</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-bold text-purple-950 mb-1.5">輸入專屬安全密碼 <span class="text-purple-600">*</span></label>
+                                <label class="block text-sm font-bold text-purple-950 mb-1.5">2. 選擇您的姓名 <span class="text-purple-600">*</span></label>
+                                <select id="reviewSupervisorSelect" class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
+                                    <option value="">正在載入名單...</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold text-purple-950 mb-1.5">3. 輸入專屬安全密碼 <span class="text-purple-600">*</span></label>
                                 <div class="relative">
-                                    <input type="password" id="reviewPinInput" placeholder="請輸入主管密碼" class="w-full rounded-xl border border-purple-300 bg-white p-2.5 pr-11 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
+                                    <input type="password" id="reviewPinInput" placeholder="請輸入安全密碼" class="w-full rounded-xl border border-purple-300 bg-white p-2.5 pr-11 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
                                     <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-purple-700 cursor-pointer text-base">
                                         <i id="togglePasswordIcon" class="fa-solid fa-eye-slash"></i>
                                     </button>
@@ -174,6 +169,7 @@
         });
 
         const fetchPendingBtn = document.getElementById('fetchPendingBtn');
+        const reviewRoleSelect = document.getElementById('reviewRoleSelect');
         const reviewSupervisorSelect = document.getElementById('reviewSupervisorSelect');
         const pendingCasesContainer = document.getElementById('pendingCasesContainer');
         const reviewModal = document.getElementById('reviewModal');
@@ -188,8 +184,105 @@
 
         let currentActiveRowIndex = null;
 
+        // 預設名單（載入後端設定後會自動同步）
+        let approversListCache = [
+            { scope: "範疇一", roleType: "子計畫負責人", name: "劉季惠" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "蔡斗元" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "唐家沛" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "曾志恩" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "林真福" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "陳可家" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "李紀慧" },
+            { scope: "範疇一", roleType: "各範疇副召集人", name: "範疇一副召集人" },
+            { scope: "範疇二", roleType: "子計畫負責人", name: "陳弘美" },
+            { scope: "範疇二", roleType: "子計畫負責人", name: "李宜恭" },
+            { scope: "範疇二", roleType: "各範疇副召集人", name: "範疇二副召集人" },
+            { scope: "範疇三", roleType: "子計畫負責人", name: "黃智瑋" },
+            { scope: "範疇三", roleType: "子計畫負責人", name: "林庭光" },
+            { scope: "範疇三", roleType: "各範疇副召集人", name: "範疇三副召集人" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "葉明憲" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "楊佳瑜" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "鄭秀晶" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "陳佳蓉" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "陳敬森" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "顏貴珍" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "陳志偉" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "劉鎮榮" },
+            { scope: "範疇四", roleType: "各範疇副召集人", name: "範疇四副召集人" }
+        ];
+
+        function renderReviewerOptions() {
+            const selectedRole = String(reviewRoleSelect.value || "").trim();
+            const isViceConvener = (selectedRole === "各範疇副召集人" || selectedRole.indexOf("副召集人") !== -1);
+
+            const filtered = approversListCache.filter(item => {
+                const rType = String(item.roleType || "").trim();
+                if (isViceConvener) {
+                    return rType === "各範疇副召集人" || rType.indexOf("副召集人") !== -1;
+                }
+                return rType === "子計畫負責人" || rType.indexOf("負責人") !== -1;
+            });
+
+            reviewSupervisorSelect.innerHTML = `<option value="">請選擇${selectedRole}...</option>`;
+
+            const scopes = ["範疇一", "範疇二", "範疇三", "範疇四"];
+            const addedKeys = new Set();
+
+            scopes.forEach(sc => {
+                const scItems = filtered.filter(i => String(i.scope || "").trim() === sc);
+                if (scItems.length > 0) {
+                    const grp = document.createElement('optgroup');
+                    grp.label = sc;
+                    scItems.forEach(person => {
+                        const pName = String(person.name || "").trim();
+                        if (!pName) return;
+                        const opt = document.createElement('option');
+                        opt.value = pName;
+                        opt.textContent = `${pName} (${sc})`;
+                        grp.appendChild(opt);
+                        addedKeys.add(`${sc}_${pName}`);
+                    });
+                    reviewSupervisorSelect.appendChild(grp);
+                }
+            });
+
+            const others = filtered.filter(i => !addedKeys.has(`${String(i.scope || "").trim()}_${String(i.name || "").trim()}`));
+            if (others.length > 0) {
+                const otherGrp = document.createElement('optgroup');
+                otherGrp.label = "其他簽核人員";
+                others.forEach(person => {
+                    const pName = String(person.name || "").trim();
+                    if (!pName) return;
+                    const opt = document.createElement('option');
+                    opt.value = pName;
+                    opt.textContent = person.scope ? `${pName} (${person.scope})` : pName;
+                    otherGrp.appendChild(opt);
+                });
+                reviewSupervisorSelect.appendChild(otherGrp);
+            }
+        }
+
+        reviewRoleSelect.addEventListener('change', renderReviewerOptions);
+
+        async function initApproversFromServer() {
+            renderReviewerOptions();
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getPublicApprovers&_t=${Date.now()}`);
+                const data = await res.json();
+                if (data.status === "success" && Array.isArray(data.approvers)) {
+                    approversListCache = data.approvers;
+                    renderReviewerOptions();
+                }
+            } catch (e) {
+                console.warn("載入簽核名單失敗，使用預設名單", e);
+            }
+        }
+
+        initApproversFromServer();
+
         // 主管登出操作
         supervisorLogoutBtn.addEventListener('click', () => {
+            reviewRoleSelect.disabled = false;
             reviewSupervisorSelect.value = "";
             reviewPinInput.value = "";
             reviewSupervisorSelect.disabled = false;
@@ -201,7 +294,7 @@
             pendingCasesContainer.innerHTML = `
                 <div class="text-center py-8 text-slate-500 bg-white/60 rounded-2xl border border-purple-100">
                     <i class="fa-solid fa-inbox text-3xl mb-2.5 text-purple-400"></i>
-                    <p class="text-base font-medium">已登出。請重新選擇主管身分並輸入對應密碼以查詢待審核案件。</p>
+                    <p class="text-base font-medium">已登出。請重新選擇簽核身分並輸入對應密碼以查詢待審核案件。</p>
                 </div>
             `;
             showCustomMessage("您已成功登出主管審核系統。", "已登出");
@@ -212,11 +305,12 @@
         }
 
         fetchPendingBtn.addEventListener('click', async function() {
+            const roleType = reviewRoleSelect.value;
             const supervisor = reviewSupervisorSelect.value;
             const pin = reviewPinInput.value.trim();
 
             if (!supervisor) {
-                showCustomMessage("請先選擇您的主管身分！", "警告");
+                showCustomMessage("請先選擇您的簽核姓名！", "警告");
                 return;
             }
             if (!pin) {
@@ -227,13 +321,14 @@
             pendingCasesContainer.innerHTML = `<div class="text-center py-8 text-purple-700 bg-white/60 rounded-2xl border border-purple-100 font-bold"><i class="fa-solid fa-spinner fa-spin text-3xl mb-2.5"></i><p class="text-base">正在驗證密碼並載入待審清單...</p></div>`;
 
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=getPending&supervisor=${encodeURIComponent(supervisor)}&pin=${encodeURIComponent(pin)}`);
+                const res = await fetch(`${SCRIPT_URL}?action=getPending&roleType=${encodeURIComponent(roleType)}&supervisor=${encodeURIComponent(supervisor)}&pin=${encodeURIComponent(pin)}`);
                 const data = await res.json();
 
                 if (data.status === "success") {
-                    // 驗證成功，顯示主管登入狀態與登出按鈕，並鎖定身分切換避免誤操作
-                    currentSupervisorName.textContent = supervisor;
+                    // 驗證成功，顯示登入狀態與登出按鈕，並鎖定身分切換避免誤操作
+                    currentSupervisorName.textContent = `${supervisor} (${roleType})`;
                     supervisorLoggedInBar.classList.remove('hidden');
+                    reviewRoleSelect.disabled = true;
                     reviewSupervisorSelect.disabled = true;
                     reviewPinInput.disabled = true;
 
@@ -242,13 +337,13 @@
                         pendingCasesContainer.innerHTML = `
                             <div class="text-center py-8 text-slate-600 bg-white/70 rounded-2xl border border-purple-100 p-5">
                                 <i class="fa-solid fa-circle-check text-3xl mb-2.5 text-emerald-500"></i>
-                                <p class="text-base font-bold text-slate-800">密碼驗證成功！目前沒有屬於「${supervisor}」主管的待審核案件。</p>
+                                <p class="text-base font-bold text-slate-800">密碼驗證成功！目前沒有屬於「${supervisor} (${roleType})」的待審核案件。</p>
                             </div>
                         `;
                         return;
                     }
 
-                    let html = `<div class="p-3.5 bg-emerald-50 text-emerald-900 text-base font-bold rounded-2xl border border-emerald-300 mb-3 flex items-center gap-2"><i class="fa-solid fa-shield-check text-emerald-600 text-lg"></i> 密碼驗證成功！目前顯示屬於「${supervisor}」的待審核案件：</div>`;
+                    let html = `<div class="p-3.5 bg-emerald-50 text-emerald-900 text-base font-bold rounded-2xl border border-emerald-300 mb-3 flex items-center gap-2"><i class="fa-solid fa-shield-check text-emerald-600 text-lg"></i> 密碼驗證成功！目前顯示屬於「${supervisor} (${roleType})」的待審核案件：</div>`;
                     cases.forEach(item => {
                         html += `
                             <div class="bg-white p-5 rounded-3xl border border-purple-200 shadow-md flex flex-col justify-between items-start gap-4">
@@ -259,6 +354,8 @@
                                         <span class="px-2.5 py-0.5 bg-amber-100 text-amber-900 text-sm font-bold rounded-lg">${item.status}</span>
                                         <span class="text-sm font-bold text-indigo-800 bg-indigo-50 px-2.5 py-0.5 rounded-lg border border-indigo-100">申請人：${item.applicantName}</span>
                                     </div>
+                                    ${item.workflowStr ? `<div class="text-xs sm:text-sm font-bold text-indigo-900 bg-indigo-50/70 px-3 py-1.5 rounded-xl border border-indigo-200"><i class="fa-solid fa-route mr-1.5 text-indigo-600"></i>簽核流程：${item.workflowStr}</div>` : ''}
+                                    ${item.previousComment ? `<div class="text-xs sm:text-sm font-bold text-emerald-900 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200"><i class="fa-solid fa-comment-dots mr-1.5 text-emerald-600"></i>前關審核紀錄：${item.previousComment}</div>` : ''}
                                     
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 bg-purple-50/70 p-4 rounded-2xl border border-purple-200 text-sm sm:text-base">
                                         <div class="space-y-1.5">
@@ -335,6 +432,7 @@
             if (!currentActiveRowIndex) return;
             const comment = supervisorComment.value;
             const supervisor = reviewSupervisorSelect.value;
+            const roleType = reviewRoleSelect.value;
 
             approveActionBtn.disabled = true;
             rejectActionBtn.disabled = true;
@@ -344,6 +442,7 @@
                 rowIndex: currentActiveRowIndex,
                 decision: decision,
                 supervisorName: supervisor,
+                reviewerRole: roleType,
                 comment: comment
             };
 
