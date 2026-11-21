@@ -15,7 +15,7 @@
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 50%, #7c3aed 100%);
             min-height: 100vh;
-            font-size: 20px;
+            font-size: 16px;
         }
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
@@ -27,39 +27,39 @@
             overflow-wrap: break-word;
         }
         select option {
-            font-size: 18px;
-            padding: 8px;
+            font-size: 15px;
+            padding: 6px;
         }
     </style>
 </head>
-<body class="text-slate-800 antialiased py-6 px-3 sm:px-6 lg:px-8 text-xl">
+<body class="text-slate-800 antialiased py-6 px-3 sm:px-6 lg:px-8 text-base">
 
     <!-- 帳號密碼登入驗證遮罩 (預設顯示，驗證通過後隱藏) -->
     <div id="authGateModal" class="fixed inset-0 bg-purple-950/90 backdrop-blur-md flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl space-y-6 border border-purple-200 text-center">
-            <div class="w-20 h-20 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center mx-auto text-4xl shadow-inner">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl space-y-5 border border-purple-200 text-center">
+            <div class="w-16 h-16 bg-purple-100 text-purple-700 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner">
                 <i class="fa-solid fa-user-lock"></i>
             </div>
             <div>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-purple-950">系統帳號登入驗證</h2>
-                <p class="text-lg text-slate-600 mt-2 font-medium">請輸入您的專屬帳號與密碼以進入申請系統</p>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-purple-950">系統帳號登入驗證</h2>
+                <p class="text-sm sm:text-base text-slate-600 mt-1.5 font-medium">請輸入您的專屬帳號與密碼以進入申請系統</p>
             </div>
             <div class="space-y-4 text-left">
                 <div>
-                    <label class="block text-lg font-bold text-purple-950 mb-1">登入帳號 <span class="text-rose-600">*</span></label>
-                    <input type="text" id="loginAccountInput" placeholder="請輸入帳號..." class="w-full rounded-xl border-2 border-purple-200 bg-purple-50/50 p-3.5 text-xl text-slate-800 focus:ring-2 focus:ring-purple-500 font-bold">
+                    <label class="block text-sm font-bold text-purple-950 mb-1">登入帳號 <span class="text-rose-600">*</span></label>
+                    <input type="text" id="loginAccountInput" placeholder="請輸入帳號..." class="w-full rounded-xl border-2 border-purple-200 bg-purple-50/50 p-3 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-bold">
                 </div>
                 <div>
-                    <label class="block text-lg font-bold text-purple-950 mb-1">登入密碼 <span class="text-rose-600">*</span></label>
+                    <label class="block text-sm font-bold text-purple-950 mb-1">登入密碼 <span class="text-rose-600">*</span></label>
                     <div class="relative">
-                        <input type="password" id="loginPasswordInput" placeholder="請輸入密碼..." class="w-full rounded-xl border-2 border-purple-200 bg-purple-50/50 p-3.5 pr-12 text-xl text-slate-800 focus:ring-2 focus:ring-purple-500 font-bold">
-                        <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-purple-700 cursor-pointer text-xl">
+                        <input type="password" id="loginPasswordInput" placeholder="請輸入密碼..." class="w-full rounded-xl border-2 border-purple-200 bg-purple-50/50 p-3 pr-11 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-bold">
+                        <button type="button" id="togglePasswordBtn" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-purple-700 cursor-pointer text-base">
                             <i id="togglePasswordIcon" class="fa-solid fa-eye-slash"></i>
                         </button>
                     </div>
                 </div>
-                <div id="authErrorMsg" class="hidden text-base font-bold text-rose-600 bg-rose-50 p-3 rounded-xl border border-rose-200"></div>
-                <button type="button" id="verifyLoginBtn" class="w-full bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white font-extrabold py-4 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 text-xl cursor-pointer">
+                <div id="authErrorMsg" class="hidden text-sm font-bold text-rose-600 bg-rose-50 p-3 rounded-xl border border-rose-200"></div>
+                <button type="button" id="verifyLoginBtn" class="w-full bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white font-extrabold py-3.5 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 text-base cursor-pointer">
                     <i class="fa-solid fa-right-to-bracket"></i> 登入系統
                 </button>
             </div>
@@ -68,74 +68,74 @@
 
     <div id="mainAppContainer" class="max-w-6xl mx-auto space-y-6 hidden">
         <!-- 頁頭資訊與登入者身分顯示 -->
-        <header class="text-center mb-8 relative">
-            <div class="inline-flex items-center justify-center p-4 bg-white/20 rounded-full shadow-lg mb-4 text-white animate-pulse">
-                <i class="fa-solid fa-file-invoice-dollar text-4xl"></i>
+        <header class="text-center mb-6 relative">
+            <div class="inline-flex items-center justify-center p-3.5 bg-white/20 rounded-full shadow-lg mb-3 text-white animate-pulse">
+                <i class="fa-solid fa-file-invoice-dollar text-3xl"></i>
             </div>
-            <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight drop-shadow-md">
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight drop-shadow-md">
                 健康台灣深耕計畫
             </h1>
-            <p class="text-purple-100 text-xl sm:text-2xl mt-3 font-medium">經費變更線上申請系統</p>
+            <p class="text-purple-100 text-base sm:text-lg mt-2 font-medium">經費變更線上申請系統</p>
             
             <!-- 登入者資訊與登出按鈕列 -->
-            <div class="mt-4 sm:mt-0 sm:absolute sm:right-0 sm:top-4 flex flex-wrap items-center justify-center gap-2.5">
-                <div class="bg-white/95 text-purple-950 px-4 py-2 rounded-xl shadow-md font-extrabold text-base flex items-center gap-2">
-                    <i class="fa-solid fa-circle-user text-purple-600 text-xl"></i>
+            <div class="mt-4 sm:mt-0 sm:absolute sm:right-0 sm:top-2 flex flex-wrap items-center justify-center gap-2">
+                <div class="bg-white/95 text-purple-950 px-3.5 py-1.5 rounded-xl shadow-md font-bold text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-circle-user text-purple-600 text-base"></i>
                     <span>目前登入：<span id="displayUserName" class="text-indigo-700">未登入</span></span>
                     <span id="displayUserRoleBadge" style="display: none;" class="hidden px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300 rounded-md text-xs font-extrabold">管理者</span>
                 </div>
-                <button type="button" id="openAdminPanelBtn" style="display: none;" class="hidden bg-amber-500 hover:bg-amber-600 text-white text-base font-extrabold py-2 px-4 rounded-xl shadow-md transition cursor-pointer items-center gap-2">
+                <button type="button" id="openAdminPanelBtn" style="display: none;" class="hidden bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold py-1.5 px-3.5 rounded-xl shadow-md transition cursor-pointer items-center gap-1.5">
                     <i class="fa-solid fa-users-gear"></i> 帳號管理
                 </button>
-                <button type="button" id="logoutBtn" class="bg-rose-600/90 hover:bg-rose-700 text-white text-base font-bold py-2 px-4 rounded-xl shadow-md transition cursor-pointer inline-flex items-center gap-2">
+                <button type="button" id="logoutBtn" class="bg-rose-600/90 hover:bg-rose-700 text-white text-sm font-bold py-1.5 px-3.5 rounded-xl shadow-md transition cursor-pointer inline-flex items-center gap-1.5">
                     <i class="fa-solid fa-right-from-bracket"></i> 登出
                 </button>
             </div>
         </header>
 
         <!-- 管理者專屬：線上帳號權限管理彈窗 -->
-        <div id="adminUsersModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 hidden text-lg">
-            <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-4xl w-full shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
-                <div class="flex items-center justify-between border-b border-purple-200 pb-4">
-                    <h3 class="text-2xl font-extrabold text-purple-950 flex items-center gap-3">
+        <div id="adminUsersModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 hidden text-base">
+            <div class="bg-white rounded-3xl p-6 max-w-4xl w-full shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+                <div class="flex items-center justify-between border-b border-purple-200 pb-3">
+                    <h3 class="text-xl font-extrabold text-purple-950 flex items-center gap-2.5">
                         <i class="fa-solid fa-users-gear text-amber-600"></i> 系統使用者帳號權限管理
                     </h3>
-                    <button type="button" id="closeAdminUsersModal" class="text-slate-400 hover:text-slate-700 text-2xl font-bold cursor-pointer p-2">
+                    <button type="button" id="closeAdminUsersModal" class="text-slate-400 hover:text-slate-700 text-xl font-bold cursor-pointer p-1.5">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
 
                 <!-- 新增 / 編輯帳號表單 -->
-                <div class="bg-purple-50/90 p-5 rounded-2xl border border-purple-200 space-y-4">
-                    <h4 id="adminFormTitle" class="font-extrabold text-purple-900 text-xl flex items-center gap-2">
+                <div class="bg-purple-50/90 p-4 rounded-2xl border border-purple-200 space-y-3.5">
+                    <h4 id="adminFormTitle" class="font-extrabold text-purple-900 text-base flex items-center gap-2">
                         <i class="fa-solid fa-user-plus text-purple-600"></i> 新增 / 修改使用者帳號
                     </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                         <div>
-                            <label class="block text-base font-bold text-purple-950 mb-1">帳號 <span class="text-rose-600">*</span></label>
-                            <input type="text" id="adminTargetAcc" placeholder="例: user02" class="w-full rounded-xl border-2 border-purple-200 bg-white p-2.5 text-base font-bold text-slate-800">
+                            <label class="block text-sm font-bold text-purple-950 mb-1">帳號 <span class="text-rose-600">*</span></label>
+                            <input type="text" id="adminTargetAcc" placeholder="例: user02" class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-sm font-bold text-slate-800">
                         </div>
                         <div>
-                            <label class="block text-base font-bold text-purple-950 mb-1">密碼 <span class="text-rose-600">*</span></label>
-                            <input type="text" id="adminTargetPwd" placeholder="設定登入密碼" class="w-full rounded-xl border-2 border-purple-200 bg-white p-2.5 text-base font-bold text-slate-800">
+                            <label class="block text-sm font-bold text-purple-950 mb-1">密碼 <span class="text-rose-600">*</span></label>
+                            <input type="text" id="adminTargetPwd" placeholder="設定登入密碼" class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-sm font-bold text-slate-800">
                         </div>
                         <div>
-                            <label class="block text-base font-bold text-purple-950 mb-1">使用者姓名 <span class="text-rose-600">*</span></label>
-                            <input type="text" id="adminTargetName" placeholder="自動帶入申請人" class="w-full rounded-xl border-2 border-purple-200 bg-white p-2.5 text-base font-bold text-slate-800">
+                            <label class="block text-sm font-bold text-purple-950 mb-1">使用者姓名 <span class="text-rose-600">*</span></label>
+                            <input type="text" id="adminTargetName" placeholder="自動帶入申請人" class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-sm font-bold text-slate-800">
                         </div>
                         <div>
-                            <label class="block text-base font-bold text-purple-950 mb-1">角色權限</label>
-                            <select id="adminTargetRole" class="w-full rounded-xl border-2 border-purple-200 bg-white p-2.5 text-base font-bold text-slate-800">
+                            <label class="block text-sm font-bold text-purple-950 mb-1">角色權限</label>
+                            <select id="adminTargetRole" class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-sm font-bold text-slate-800">
                                 <option value="一般使用者">一般使用者</option>
                                 <option value="管理者">管理者</option>
                             </select>
                         </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3 items-center">
-                        <input type="text" id="adminTargetNote" placeholder="備註說明（選填，例：研究助理 / 單位名稱）..." class="flex-1 w-full rounded-xl border-2 border-purple-200 bg-white p-2.5 text-base text-slate-800">
+                        <input type="text" id="adminTargetNote" placeholder="備註說明（選填，例：研究助理 / 單位名稱）..." class="flex-1 w-full rounded-xl border border-purple-300 bg-white p-2.5 text-sm text-slate-800">
                         <div class="flex gap-2 w-full sm:w-auto">
-                            <button type="button" id="adminClearFormBtn" class="px-4 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-xl text-base cursor-pointer">清空</button>
-                            <button type="button" id="adminSaveUserBtn" class="flex-1 sm:flex-none px-6 py-2.5 bg-purple-700 hover:bg-purple-800 text-white font-extrabold rounded-xl text-base shadow-md cursor-pointer flex items-center justify-center gap-2">
+                            <button type="button" id="adminClearFormBtn" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-xl text-sm cursor-pointer">清空</button>
+                            <button type="button" id="adminSaveUserBtn" class="flex-1 sm:flex-none px-5 py-2 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-xl text-sm shadow-md cursor-pointer flex items-center justify-center gap-1.5">
                                 <i class="fa-solid fa-floppy-disk"></i> 儲存帳號設定
                             </button>
                         </div>
@@ -143,43 +143,43 @@
                 </div>
 
                 <!-- 現有帳號清單 -->
-                <div class="space-y-3">
+                <div class="space-y-2.5">
                     <div class="flex items-center justify-between">
-                        <h4 class="font-extrabold text-slate-800 text-xl">現有帳號清單</h4>
-                        <button type="button" id="adminRefreshUsersBtn" class="text-purple-700 hover:text-purple-900 font-bold text-base flex items-center gap-1 cursor-pointer">
+                        <h4 class="font-extrabold text-slate-800 text-base">現有帳號清單</h4>
+                        <button type="button" id="adminRefreshUsersBtn" class="text-purple-700 hover:text-purple-900 font-bold text-sm flex items-center gap-1 cursor-pointer">
                             <i class="fa-solid fa-rotate"></i> 重新整理
                         </button>
                     </div>
                     <div id="adminUsersListContainer" class="overflow-x-auto rounded-2xl border border-purple-200">
-                        <div class="p-6 text-center text-slate-500">載入中...</div>
+                        <div class="p-5 text-center text-slate-500 text-sm">載入中...</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- 左側/上方：經費變更申請表單 -->
             <div class="lg:col-span-2 space-y-6">
-                <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
-                    <div class="flex flex-wrap items-center justify-between border-b border-purple-100 pb-4 mb-6 gap-2">
-                        <h2 class="text-2xl sm:text-3xl font-bold text-purple-900 flex items-center gap-3">
+                <div class="glass-card rounded-3xl shadow-2xl p-5 sm:p-7">
+                    <div class="flex flex-wrap items-center justify-between border-b border-purple-100 pb-3.5 mb-5 gap-2">
+                        <h2 class="text-xl sm:text-2xl font-bold text-purple-900 flex items-center gap-2.5">
                             <i class="fa-solid fa-pen-to-square text-purple-600"></i>
                             填寫經費變更申請表
                         </h2>
-                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-lg font-bold rounded-full uppercase tracking-wider">線上填報</span>
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-800 text-sm font-bold rounded-full uppercase tracking-wider">線上填報</span>
                     </div>
 
-                    <form id="budgetForm" class="space-y-8">
+                    <form id="budgetForm" class="space-y-6">
                         <!-- 流出項目區塊 -->
-                        <div class="p-6 rounded-2xl bg-rose-50/90 border border-rose-200/80 shadow-sm space-y-5">
-                            <h3 class="font-bold text-rose-900 flex items-center gap-2 text-2xl">
+                        <div class="p-5 rounded-2xl bg-rose-50/90 border border-rose-200/80 shadow-sm space-y-4">
+                            <h3 class="font-bold text-rose-900 flex items-center gap-2 text-lg">
                                 <i class="fa-solid fa-circle-minus text-rose-600"></i> 經費流出項目 (來源)
                             </h3>
                             
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xl font-bold text-rose-950 mb-2">流出範疇 <span class="text-rose-600">*</span></label>
-                                    <select id="fromCategorySelect" required class="w-full rounded-xl border-2 border-rose-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium">
+                                    <label class="block text-sm font-bold text-rose-950 mb-1.5">流出範疇 <span class="text-rose-600">*</span></label>
+                                    <select id="fromCategorySelect" required class="w-full rounded-xl border border-rose-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium">
                                         <option value="">請選擇範疇...</option>
                                         <option value="範疇一">範疇一</option>
                                         <option value="範疇二">範疇二</option>
@@ -188,61 +188,61 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xl font-bold text-rose-950 mb-2">流出子計畫名稱 <span class="text-rose-600">*</span></label>
-                                    <select id="fromSubProjectSelect" required class="w-full rounded-xl border-2 border-rose-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium leading-tight">
+                                    <label class="block text-sm font-bold text-rose-950 mb-1.5">流出子計畫名稱 <span class="text-rose-600">*</span></label>
+                                    <select id="fromSubProjectSelect" required class="w-full rounded-xl border border-rose-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium leading-snug">
                                         <option value="">請先選擇範疇...</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div>
-                                    <label class="block text-xl font-bold text-rose-950 mb-2">經費來源 <span class="text-rose-600">*</span></label>
-                                    <select id="fromSource" required class="w-full rounded-xl border-2 border-rose-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium">
+                                    <label class="block text-sm font-bold text-rose-950 mb-1.5">經費來源 <span class="text-rose-600">*</span></label>
+                                    <select id="fromSource" required class="w-full rounded-xl border border-rose-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium">
                                         <option value="">請選擇...</option>
                                         <option value="補助款">補助款</option>
                                         <option value="機構配合款">機構配合款</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xl font-bold text-rose-950 mb-2">門別 <span class="text-rose-600">*</span></label>
-                                    <select id="fromCategory" required class="w-full rounded-xl border-2 border-rose-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium">
+                                    <label class="block text-sm font-bold text-rose-950 mb-1.5">門別 <span class="text-rose-600">*</span></label>
+                                    <select id="fromCategory" required class="w-full rounded-xl border border-rose-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium">
                                         <option value="">請選擇...</option>
                                         <option value="經常門">經常門</option>
                                         <option value="資本門">資本門</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xl font-bold text-rose-950 mb-2">項目名稱 <span class="text-rose-600">*</span></label>
-                                    <select id="fromItem" required class="w-full rounded-xl border-2 border-rose-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium">
+                                    <label class="block text-sm font-bold text-rose-950 mb-1.5">項目名稱 <span class="text-rose-600">*</span></label>
+                                    <select id="fromItem" required class="w-full rounded-xl border border-rose-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium">
                                         <option value="">請先選擇門別...</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xl font-bold text-rose-950 mb-2">流出細項名稱 <span class="text-rose-600">*</span></label>
-                                    <select id="fromDetail" required class="w-full rounded-xl border-2 border-rose-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium">
+                                    <label class="block text-sm font-bold text-rose-950 mb-1.5">流出細項名稱 <span class="text-rose-600">*</span></label>
+                                    <select id="fromDetail" required class="w-full rounded-xl border border-rose-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-rose-500 font-medium">
                                         <option value="">請先選擇項目名稱...</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xl font-bold text-rose-950 mb-2">流出金額 (NT$) <span class="text-rose-600">*</span></label>
-                                    <input type="number" id="fromAmount" required min="1" placeholder="0" class="w-full rounded-xl border-2 border-rose-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-rose-500 font-extrabold text-rose-700">
+                                    <label class="block text-sm font-bold text-rose-950 mb-1.5">流出金額 (NT$) <span class="text-rose-600">*</span></label>
+                                    <input type="number" id="fromAmount" required min="1" placeholder="0" class="w-full rounded-xl border border-rose-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-rose-500 font-bold text-rose-700">
                                 </div>
                             </div>
                         </div>
 
                         <!-- 流入項目區塊 -->
-                        <div class="p-6 rounded-2xl bg-emerald-50/90 border border-emerald-200/80 shadow-sm space-y-5">
-                            <h3 class="font-bold text-emerald-900 flex items-center gap-2 text-2xl">
+                        <div class="p-5 rounded-2xl bg-emerald-50/90 border border-emerald-200/80 shadow-sm space-y-4">
+                            <h3 class="font-bold text-emerald-900 flex items-center gap-2 text-lg">
                                 <i class="fa-solid fa-circle-plus text-emerald-600"></i> 流用至經費項目 (去處)
                             </h3>
                             
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xl font-bold text-emerald-950 mb-2">流入範疇 <span class="text-emerald-600">*</span></label>
-                                    <select id="toCategorySelect" required class="w-full rounded-xl border-2 border-emerald-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium">
+                                    <label class="block text-sm font-bold text-emerald-950 mb-1.5">流入範疇 <span class="text-emerald-600">*</span></label>
+                                    <select id="toCategorySelect" required class="w-full rounded-xl border border-emerald-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium">
                                         <option value="">請選擇範疇...</option>
                                         <option value="範疇一">範疇一</option>
                                         <option value="範疇二">範疇二</option>
@@ -251,47 +251,47 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xl font-bold text-emerald-950 mb-2">流入子計畫名稱 <span class="text-emerald-600">*</span></label>
-                                    <select id="toSubProjectSelect" required class="w-full rounded-xl border-2 border-emerald-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium leading-tight">
+                                    <label class="block text-sm font-bold text-emerald-950 mb-1.5">流入子計畫名稱 <span class="text-emerald-600">*</span></label>
+                                    <select id="toSubProjectSelect" required class="w-full rounded-xl border border-emerald-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium leading-snug">
                                         <option value="">請先選擇範疇...</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div>
-                                    <label class="block text-xl font-bold text-emerald-950 mb-2">流至經費 <span class="text-emerald-600">*</span></label>
-                                    <select id="toSource" required class="w-full rounded-xl border-2 border-emerald-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium">
+                                    <label class="block text-sm font-bold text-emerald-950 mb-1.5">流至經費 <span class="text-emerald-600">*</span></label>
+                                    <select id="toSource" required class="w-full rounded-xl border border-emerald-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium">
                                         <option value="">請選擇...</option>
                                         <option value="補助款">補助款</option>
                                         <option value="機構配合款">機構配合款</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xl font-bold text-emerald-950 mb-2">門別 <span class="text-emerald-600">*</span></label>
-                                    <select id="toCategory" required class="w-full rounded-xl border-2 border-emerald-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium">
+                                    <label class="block text-sm font-bold text-emerald-950 mb-1.5">門別 <span class="text-emerald-600">*</span></label>
+                                    <select id="toCategory" required class="w-full rounded-xl border border-emerald-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium">
                                         <option value="">請選擇...</option>
                                         <option value="經常門">經常門</option>
                                         <option value="資本門">資本門</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xl font-bold text-emerald-950 mb-2">項目名稱 <span class="text-emerald-600">*</span></label>
-                                    <select id="toItem" required class="w-full rounded-xl border-2 border-emerald-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium">
+                                    <label class="block text-sm font-bold text-emerald-950 mb-1.5">項目名稱 <span class="text-emerald-600">*</span></label>
+                                    <select id="toItem" required class="w-full rounded-xl border border-emerald-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium">
                                         <option value="">請先選擇門別...</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xl font-bold text-emerald-950 mb-2">流用細項名稱 <span class="text-emerald-600">*</span></label>
-                                    <select id="toDetail" required class="w-full rounded-xl border-2 border-emerald-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium">
+                                    <label class="block text-sm font-bold text-emerald-950 mb-1.5">流用細項名稱 <span class="text-emerald-600">*</span></label>
+                                    <select id="toDetail" required class="w-full rounded-xl border border-emerald-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-emerald-500 font-medium">
                                         <option value="">請先選擇項目名稱...</option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-xl font-bold text-emerald-950 mb-2">流用金額 (NT$) <span class="text-emerald-600">*</span></label>
-                                    <input type="number" id="toAmount" required min="1" placeholder="0" class="w-full rounded-xl border-2 border-emerald-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-emerald-500 font-extrabold text-emerald-700">
+                                    <label class="block text-sm font-bold text-emerald-950 mb-1.5">流用金額 (NT$) <span class="text-emerald-600">*</span></label>
+                                    <input type="number" id="toAmount" required min="1" placeholder="0" class="w-full rounded-xl border border-emerald-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-emerald-500 font-bold text-emerald-700">
                                 </div>
                             </div>
                         </div>
@@ -299,48 +299,48 @@
                         <!-- 理由與簽核設定區塊 -->
                         <div class="space-y-4">
                             <div>
-                                <label class="block text-xl font-bold text-purple-950 mb-2">變更類型 <span class="text-purple-600">*</span></label>
-                                <select id="reasonType" required class="w-full rounded-xl border-2 border-purple-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
+                                <label class="block text-sm font-bold text-purple-950 mb-1.5">變更類型 <span class="text-purple-600">*</span></label>
+                                <select id="reasonType" required class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
                                     <option value="">請選擇變更類型...</option>
                                     <option value="政策性變更(主管機關政策、審查意見或院長要求)">1. 政策性變更 (主管機關政策、審查意見或院長要求)</option>
                                     <option value="自主性變更(執行單位依實際執行需求提出)">2. 自主性變更 (執行單位依實際執行需求提出)</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-xl font-bold text-purple-950 mb-2">申請變更理由與效益說明 <span class="text-purple-600">*</span></label>
-                                <textarea id="reason" required rows="4" placeholder="請詳細敘述經費變更之必要性及預期效益..." class="w-full rounded-xl border-2 border-purple-200 bg-purple-50/50 p-4 text-xl text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none transition font-medium"></textarea>
+                                <label class="block text-sm font-bold text-purple-950 mb-1.5">申請變更理由與效益說明 <span class="text-purple-600">*</span></label>
+                                <textarea id="reason" required rows="3" placeholder="請詳細敘述經費變更之必要性及預期效益..." class="w-full rounded-xl border border-purple-300 bg-purple-50/50 p-3 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none transition font-medium"></textarea>
                             </div>
                         </div>
 
-                        <div class="p-6 rounded-2xl bg-indigo-50/90 border border-indigo-200/80 shadow-sm space-y-5">
-                            <h3 class="font-bold text-indigo-950 flex items-center gap-2 text-2xl">
+                        <div class="p-5 rounded-2xl bg-indigo-50/90 border border-indigo-200/80 shadow-sm space-y-4">
+                            <h3 class="font-bold text-indigo-950 flex items-center gap-2 text-lg">
                                 <i class="fa-solid fa-file-signature text-indigo-600"></i> 簽核架構設定
                             </h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-xl font-bold text-indigo-950 mb-2">申請人姓名 (系統自動帶入)</label>
-                                    <div class="w-full rounded-xl border-2 border-indigo-200 bg-indigo-100/70 p-3 text-xl text-indigo-950 font-extrabold flex items-center gap-2">
+                                    <label class="block text-sm font-bold text-indigo-950 mb-1.5">申請人姓名 (系統自動帶入)</label>
+                                    <div class="w-full rounded-xl border border-indigo-300 bg-indigo-100/70 p-2.5 text-base text-indigo-950 font-bold flex items-center gap-2">
                                         <i class="fa-solid fa-user-check text-indigo-600"></i>
                                         <span id="formApplicantDisplay">未登入</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-xl font-bold text-indigo-950 mb-2">審核主管 / 子計畫負責人 <span class="text-indigo-600">*</span></label>
-                                    <select id="approverName" required class="w-full rounded-xl border-2 border-indigo-200 bg-white p-3 text-xl text-slate-800 focus:ring-2 focus:ring-indigo-500 font-medium">
+                                    <label class="block text-sm font-bold text-indigo-950 mb-1.5">審核主管 / 子計畫負責人 <span class="text-indigo-600">*</span></label>
+                                    <select id="approverName" required class="w-full rounded-xl border border-indigo-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-indigo-500 font-medium">
                                         <option value="">請先選擇流出範疇...</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="ruleAlert" class="hidden p-5 rounded-2xl text-xl font-bold"></div>
+                        <div id="ruleAlert" class="hidden p-4 rounded-2xl text-base font-bold"></div>
 
-                        <div class="flex flex-col sm:flex-row gap-5 pt-3">
-                            <button type="button" id="validateBtn" class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg transition flex items-center justify-center gap-3 cursor-pointer text-xl">
-                                <i class="fa-solid fa-shield-halved text-2xl"></i> 執行法規檢核
+                        <div class="flex flex-col sm:flex-row gap-4 pt-2">
+                            <button type="button" id="validateBtn" class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-3.5 px-5 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 cursor-pointer text-base">
+                                <i class="fa-solid fa-shield-halved text-lg"></i> 執行法規檢核
                             </button>
-                            <button type="submit" id="submitBtn" disabled class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg opacity-50 cursor-not-allowed transition flex items-center justify-center gap-3 text-xl">
-                                <i class="fa-solid fa-paper-plane text-2xl"></i> 提交變更申請並寄信
+                            <button type="submit" id="submitBtn" disabled class="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold py-3.5 px-5 rounded-2xl shadow-lg opacity-50 cursor-not-allowed transition flex items-center justify-center gap-2 text-base">
+                                <i class="fa-solid fa-paper-plane text-lg"></i> 提交變更申請並寄信
                             </button>
                         </div>
                     </form>
@@ -350,34 +350,34 @@
             <!-- 右側：摘要與查詢欄位 -->
             <div class="space-y-6">
                 <!-- 本次申請摘要卡片 -->
-                <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
-                    <h3 class="text-2xl font-bold text-purple-950 mb-5 flex items-center gap-3">
+                <div class="glass-card rounded-3xl shadow-2xl p-5 sm:p-6">
+                    <h3 class="text-xl font-bold text-purple-950 mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-clock-rotate-left text-purple-600"></i> 本次申請摘要
                     </h3>
-                    <div id="summaryContent" class="space-y-4 text-xl text-slate-700">
-                        <p class="italic text-slate-400 font-medium">尚未填寫完整或尚未執行檢核...</p>
+                    <div id="summaryContent" class="space-y-3 text-base text-slate-700">
+                        <p class="italic text-slate-400 font-medium text-sm">尚未填寫完整或尚未執行檢核...</p>
                     </div>
                 </div>
 
                 <!-- 申請案件進度查詢卡片 -->
-                <div class="glass-card rounded-3xl shadow-2xl p-6 sm:p-8">
-                    <h3 class="text-2xl font-bold text-purple-950 mb-4 flex items-center gap-3">
+                <div class="glass-card rounded-3xl shadow-2xl p-5 sm:p-6">
+                    <h3 class="text-xl font-bold text-purple-950 mb-3 flex items-center gap-2">
                         <i class="fa-solid fa-magnifying-glass text-purple-600"></i> 申請案件進度查詢
                     </h3>
-                    <p class="text-base text-slate-600 mb-4 font-medium">可輸入您的「申請人姓名」以查詢過往提交案件的審核狀態與紀錄。</p>
+                    <p class="text-sm text-slate-600 mb-3.5 font-medium">可輸入您的「申請人姓名」以查詢過往提交案件的審核狀態與紀錄。</p>
 
-                    <div class="space-y-4">
+                    <div class="space-y-3.5">
                         <div>
-                            <label class="block text-lg font-bold text-purple-950 mb-1">申請人姓名</label>
-                            <input type="text" id="queryApplicantName" placeholder="請輸入申請人姓名..." class="w-full rounded-xl border-2 border-purple-200 bg-white p-3 text-lg text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
+                            <label class="block text-sm font-bold text-purple-950 mb-1">申請人姓名</label>
+                            <input type="text" id="queryApplicantName" placeholder="請輸入申請人姓名..." class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
                         </div>
-                        <button type="button" id="queryCasesBtn" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-extrabold py-3.5 px-5 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-lg cursor-pointer">
+                        <button type="button" id="queryCasesBtn" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-base cursor-pointer">
                             <i class="fa-solid fa-search"></i> 查詢申請案件
                         </button>
                     </div>
 
                     <!-- 查詢結果放置區 -->
-                    <div id="queryResultContainer" class="mt-5 space-y-3"></div>
+                    <div id="queryResultContainer" class="mt-4 space-y-3"></div>
                 </div>
             </div>
         </main>
@@ -699,12 +699,12 @@
 
         function showCustomMessage(message, title = "系統提示") {
             const m = document.createElement('div');
-            m.className = "fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 text-xl";
+            m.className = "fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 text-base";
             m.innerHTML = `
-                <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl text-center space-y-6">
-                    <h3 class="text-2xl font-extrabold text-slate-800">${title}</h3>
-                    <p class="text-xl text-slate-600 font-medium leading-relaxed">${message}</p>
-                    <button id="closeMsgBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-2xl transition cursor-pointer text-xl">確定</button>
+                <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl text-center space-y-5">
+                    <h3 class="text-xl font-extrabold text-slate-800">${title}</h3>
+                    <p class="text-base text-slate-600 font-medium leading-relaxed">${message}</p>
+                    <button id="closeMsgBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-2xl transition cursor-pointer text-base">確定</button>
                 </div>
             `;
             document.body.appendChild(m);
@@ -885,38 +885,38 @@
 
             ruleAlert.classList.remove('hidden');
             if (errors.length > 0) {
-                ruleAlert.className = "p-5 rounded-2xl text-xl font-bold bg-rose-100 text-rose-900 border-2 border-rose-300 space-y-2";
-                ruleAlert.innerHTML = `<div class="font-extrabold text-2xl flex items-center gap-2"><i class="fa-solid fa-circle-xmark text-rose-600"></i> 檢核未通過：</div><ul class="list-disc list-inside space-y-1">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`;
+                ruleAlert.className = "p-4 rounded-2xl text-base font-bold bg-rose-100 text-rose-900 border border-rose-300 space-y-1.5";
+                ruleAlert.innerHTML = `<div class="font-extrabold text-lg flex items-center gap-2"><i class="fa-solid fa-circle-xmark text-rose-600"></i> 檢核未通過：</div><ul class="list-disc list-inside space-y-1 text-sm">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`;
                 submitBtn.disabled = true;
                 submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
             } else {
-                ruleAlert.className = "p-5 rounded-2xl text-xl font-bold bg-emerald-100 text-emerald-900 border-2 border-emerald-300 space-y-1";
-                ruleAlert.innerHTML = `<div class="font-extrabold text-2xl flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-600"></i> 法規檢核通過！</div>${warnings.length > 0 ? `<p class="text-lg mt-1 font-semibold text-amber-800">${warnings[0]}</p>` : '<p class="text-lg mt-1 font-medium text-emerald-800">所有流用項目符合「健康台灣深耕計畫」規範。</p>'}`;
+                ruleAlert.className = "p-4 rounded-2xl text-base font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 space-y-1";
+                ruleAlert.innerHTML = `<div class="font-extrabold text-lg flex items-center gap-2"><i class="fa-solid fa-circle-check text-emerald-600"></i> 法規檢核通過！</div>${warnings.length > 0 ? `<p class="text-sm mt-1 font-semibold text-amber-800">${warnings[0]}</p>` : '<p class="text-sm mt-1 font-medium text-emerald-800">所有流用項目符合「健康台灣深耕計畫」規範。</p>'}`;
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
                 summaryContent.innerHTML = `
-                    <div class="space-y-4 bg-white/70 p-5 rounded-2xl border border-purple-200 text-lg leading-relaxed">
+                    <div class="space-y-3 bg-white/70 p-4 rounded-2xl border border-purple-200 text-sm leading-relaxed">
                         <div>
-                            <strong class="text-purple-900 text-lg">變更類型：</strong>
+                            <strong class="text-purple-900">變更類型：</strong>
                             <span class="font-bold text-purple-950 block bg-purple-100 p-2 rounded-xl mt-1">${rType}</span>
                         </div>
                         <hr class="border-purple-200">
                         <div class="space-y-1">
-                            <strong class="text-rose-800 text-xl flex items-center gap-2"><i class="fa-solid fa-circle-minus text-rose-600"></i> 經費流出項目：</strong>
+                            <strong class="text-rose-800 text-base flex items-center gap-1.5"><i class="fa-solid fa-circle-minus text-rose-600"></i> 經費流出項目：</strong>
                             <div class="pl-2 text-slate-800 space-y-1 mt-1">
                                 <div><strong>流出子計畫：</strong> <span class="text-rose-900 font-bold">${fCatName} - ${fSubProj}</span></div>
                                 <div><strong>細項名稱：</strong> <span class="font-bold text-rose-800 bg-rose-100 px-2 py-0.5 rounded border border-rose-200">${fromDetail.value}</span></div>
-                                <div><strong>流出金額：</strong> <span class="font-extrabold text-rose-700 text-xl">$${fVal.toLocaleString()}</span></div>
+                                <div><strong>流出金額：</strong> <span class="font-extrabold text-rose-700 text-base">$${fVal.toLocaleString()}</span></div>
                             </div>
                         </div>
                         <hr class="border-purple-200">
                         <div class="space-y-1">
-                            <strong class="text-emerald-800 text-xl flex items-center gap-2"><i class="fa-solid fa-circle-plus text-emerald-600"></i> 流入經費項目：</strong>
+                            <strong class="text-emerald-800 text-base flex items-center gap-1.5"><i class="fa-solid fa-circle-plus text-emerald-600"></i> 流入經費項目：</strong>
                             <div class="pl-2 text-slate-800 space-y-1 mt-1">
                                 <div><strong>流入子計畫：</strong> <span class="text-emerald-900 font-bold">${tCatName} - ${tSubProj}</span></div>
                                 <div><strong>細項名稱：</strong> <span class="font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded border border-emerald-200">${toDetail.value}</span></div>
-                                <div><strong>流入金額：</strong> <span class="font-extrabold text-emerald-700 text-xl">$${tVal.toLocaleString()}</span></div>
+                                <div><strong>流入金額：</strong> <span class="font-extrabold text-emerald-700 text-base">$${tVal.toLocaleString()}</span></div>
                             </div>
                         </div>
                     </div>
@@ -932,7 +932,7 @@
             }
 
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-2xl"></i> 正在傳送至後端與寄信...`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin text-lg"></i> 正在傳送至後端與寄信...`;
 
             const reasonTypeVal = document.getElementById('reasonType').value;
             const reasonDetailVal = document.getElementById('reason').value;
@@ -972,21 +972,21 @@
                 console.error(err);
                 showCustomMessage("送出時發生網路錯誤，請檢查連線或稍後再試。", "錯誤");
             } finally {
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-2xl"></i> 提交變更申請並寄信`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-lg"></i> 提交變更申請並寄信`;
             }
         });
 
         function showSuccessModal(approverName) {
             const modal = document.createElement('div');
-            modal.className = "fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 text-xl";
+            modal.className = "fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 text-base";
             modal.innerHTML = `
-                <div class="bg-white rounded-3xl p-8 max-w-lg w-full shadow-2xl text-center space-y-6">
-                    <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-4xl">
+                <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl text-center space-y-5">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl">
                         <i class="fa-solid fa-paper-plane"></i>
                     </div>
-                    <h3 class="text-3xl font-extrabold text-slate-900">變更申請已成功送出！</h3>
-                    <p class="text-xl text-slate-700 leading-relaxed font-medium">資料已寫入系統，並已發送通知信給主管 <strong class="text-purple-800 font-extrabold">${approverName}</strong> 前往專屬審核網頁。</p>
-                    <button id="closeModal" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-extrabold py-4 rounded-2xl shadow-lg transition cursor-pointer text-xl">確定</button>
+                    <h3 class="text-2xl font-extrabold text-slate-900">變更申請已成功送出！</h3>
+                    <p class="text-base text-slate-700 leading-relaxed font-medium">資料已寫入系統，並已發送通知信給主管 <strong class="text-purple-800 font-extrabold">${approverName}</strong> 前往專屬審核網頁。</p>
+                    <button id="closeModal" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-2xl shadow-lg transition cursor-pointer text-base">確定</button>
                 </div>
             `;
             document.body.appendChild(modal);
@@ -996,7 +996,7 @@
                 submitBtn.disabled = true;
                 submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 ruleAlert.classList.add('hidden');
-                summaryContent.innerHTML = '<p class="italic text-slate-400 font-medium">尚未填寫完整或尚未執行檢核...</p>';
+                summaryContent.innerHTML = '<p class="italic text-slate-400 font-medium text-sm">尚未填寫完整或尚未執行檢核...</p>';
             });
         }
 
