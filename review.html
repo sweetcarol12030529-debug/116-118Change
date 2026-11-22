@@ -127,8 +127,8 @@
             </div>
             <div id="reviewModalDetails" class="space-y-3 text-sm sm:text-base text-slate-800 bg-purple-50 p-4 rounded-2xl border border-purple-200 leading-relaxed"></div>
             <div>
-                <label class="block text-sm font-bold text-purple-950 mb-1.5">主管審核評語 / 意見說明</label>
-                <textarea id="supervisorComment" rows="3" placeholder="請填寫審核意見（若退件請務必說明原因）..." class="w-full rounded-2xl border border-purple-300 bg-purple-50/50 p-3 text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none transition text-base font-medium"></textarea>
+                <label class="block text-sm font-bold text-purple-950 mb-1.5">主管審核評語 / 意見說明 <span class="text-rose-600">*</span></label>
+                <textarea id="supervisorComment" rows="3" required placeholder="請務必填寫審核意見或評語..." class="w-full rounded-2xl border border-purple-300 bg-purple-50/50 p-3 text-slate-800 focus:ring-2 focus:ring-purple-500 focus:outline-none transition text-base font-medium"></textarea>
             </div>
             <div class="flex flex-col sm:flex-row gap-3 pt-1">
                 <button type="button" id="rejectActionBtn" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-5 rounded-2xl shadow-lg transition flex items-center justify-center gap-2 text-base cursor-pointer">
@@ -430,7 +430,12 @@
 
         async function submitReviewDecision(decision) {
             if (!currentActiveRowIndex) return;
-            const comment = supervisorComment.value;
+            const comment = supervisorComment.value.trim();
+            if (!comment) {
+                showCustomMessage("請務必填寫「主管審核評語 / 意見說明」後再送出審核！", "欄位必填提示");
+                supervisorComment.focus();
+                return;
+            }
             const supervisor = reviewSupervisorSelect.value;
             const roleType = reviewRoleSelect.value;
 
