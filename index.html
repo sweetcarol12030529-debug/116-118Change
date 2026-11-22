@@ -84,6 +84,9 @@
                     <span>目前登入：<span id="displayUserName" class="text-indigo-700">未登入</span></span>
                     <span id="displayUserRoleBadge" style="display: none;" class="hidden px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300 rounded-md text-xs font-extrabold">管理者</span>
                 </div>
+                <button type="button" id="openWorkflowConfigBtn" style="display: none;" class="hidden bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold py-1.5 px-3.5 rounded-xl shadow-md transition cursor-pointer items-center gap-1.5">
+                    <i class="fa-solid fa-sitemap"></i> 簽核流程設定
+                </button>
                 <button type="button" id="openAdminPanelBtn" style="display: none;" class="hidden bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold py-1.5 px-3.5 rounded-xl shadow-md transition cursor-pointer items-center gap-1.5">
                     <i class="fa-solid fa-users-gear"></i> 帳號管理
                 </button>
@@ -92,6 +95,82 @@
                 </button>
             </div>
         </header>
+
+        <!-- 管理者專屬：簽核流程與人員權限管理彈窗 -->
+        <div id="workflowConfigModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 hidden text-base">
+            <div class="bg-white rounded-3xl p-6 max-w-4xl w-full shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto">
+                <div class="flex items-center justify-between border-b border-indigo-200 pb-3">
+                    <div>
+                        <h3 class="text-xl font-extrabold text-indigo-950 flex items-center gap-2.5">
+                            <i class="fa-solid fa-sitemap text-indigo-600"></i> 簽核流程與人員權限設定
+                        </h3>
+                        <p class="text-xs sm:text-sm text-indigo-700 font-bold mt-1">
+                            標準簽核流程：申請人 ➔ 第一關：子計畫負責人 ➔ 第二關：各範疇副召集人
+                        </p>
+                    </div>
+                    <button type="button" id="closeWorkflowConfigModal" class="text-slate-400 hover:text-slate-700 text-xl font-bold cursor-pointer p-1.5">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- 新增 / 編輯簽核人員表單 -->
+                <div class="bg-indigo-50/90 p-4 rounded-2xl border border-indigo-200 space-y-3.5">
+                    <h4 class="font-extrabold text-indigo-950 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-user-shield text-indigo-600"></i> 新增 / 修改簽核關卡人員
+                    </h4>
+                    <input type="hidden" id="wfTargetRowIndex" value="">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-indigo-950 mb-1">所屬範疇 <span class="text-rose-600">*</span></label>
+                            <select id="wfTargetScope" class="w-full rounded-xl border border-indigo-300 bg-white p-2 text-sm font-bold text-slate-800">
+                                <option value="範疇一">範疇一</option>
+                                <option value="範疇二">範疇二</option>
+                                <option value="範疇三">範疇三</option>
+                                <option value="範疇四">範疇四</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-indigo-950 mb-1">簽核關卡角色 <span class="text-rose-600">*</span></label>
+                            <select id="wfTargetRoleType" class="w-full rounded-xl border border-indigo-300 bg-white p-2 text-sm font-bold text-slate-800">
+                                <option value="子計畫負責人">第一關：子計畫負責人</option>
+                                <option value="各範疇副召集人">第二關：各範疇副召集人</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-indigo-950 mb-1">簽核人姓名 <span class="text-rose-600">*</span></label>
+                            <input type="text" id="wfTargetName" placeholder="輸入姓名" class="w-full rounded-xl border border-indigo-300 bg-white p-2 text-sm font-bold text-slate-800">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-indigo-950 mb-1">通知電子信箱 <span class="text-rose-600">*</span></label>
+                            <input type="email" id="wfTargetEmail" placeholder="example@tzuchi.com.tw" class="w-full rounded-xl border border-indigo-300 bg-white p-2 text-sm text-slate-800">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-indigo-950 mb-1">審核安全密碼 <span class="text-rose-600">*</span></label>
+                            <input type="text" id="wfTargetPin" placeholder="審核登入PIN" class="w-full rounded-xl border border-indigo-300 bg-white p-2 text-sm font-bold text-slate-800">
+                        </div>
+                    </div>
+                    <div class="flex justify-end gap-2 pt-1">
+                        <button type="button" id="wfClearFormBtn" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-xl text-sm cursor-pointer">清空</button>
+                        <button type="button" id="wfSaveBtn" class="px-5 py-2 bg-indigo-700 hover:bg-indigo-800 text-white font-bold rounded-xl text-sm shadow-md cursor-pointer flex items-center gap-1.5">
+                            <i class="fa-solid fa-floppy-disk"></i> 儲存簽核人員設定
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 現有簽核人員清單 -->
+                <div class="space-y-2.5">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-extrabold text-slate-800 text-base">各範疇簽核人員配置表</h4>
+                        <button type="button" id="wfRefreshBtn" class="text-indigo-700 hover:text-indigo-900 font-bold text-sm flex items-center gap-1 cursor-pointer">
+                            <i class="fa-solid fa-rotate"></i> 重新整理
+                        </button>
+                    </div>
+                    <div id="wfListContainer" class="overflow-x-auto rounded-2xl border border-indigo-200">
+                        <div class="p-5 text-center text-slate-500 text-sm">載入中...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- 管理者專屬：線上帳號權限管理彈窗 -->
         <div id="adminUsersModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 hidden text-base">
@@ -131,6 +210,25 @@
                             </select>
                         </div>
                     </div>
+                    <!-- 限定使用者授權範疇與子計畫設定 -->
+                    <div id="adminScopeLimitRow" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 bg-white/80 p-3 rounded-xl border border-purple-200">
+                        <div>
+                            <label class="block text-xs font-extrabold text-purple-950 mb-1">限定授權範疇（申請人可用範圍）</label>
+                            <select id="adminTargetScope" class="w-full rounded-xl border border-purple-300 bg-white p-2 text-sm font-bold text-slate-800">
+                                <option value="全部">全部範疇 (不限制)</option>
+                                <option value="範疇一">僅限 範疇一</option>
+                                <option value="範疇二">僅限 範疇二</option>
+                                <option value="範疇三">僅限 範疇三</option>
+                                <option value="範疇四">僅限 範疇四</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-extrabold text-purple-950 mb-1">限定授權子計畫（申請人可用子計畫）</label>
+                            <select id="adminTargetSubProject" class="w-full rounded-xl border border-purple-300 bg-white p-2 text-sm font-bold text-slate-800">
+                                <option value="全部">全部子計畫 (不限制)</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="flex flex-col sm:flex-row gap-3 items-center">
                         <input type="text" id="adminTargetNote" placeholder="備註說明（選填，例：研究助理 / 單位名稱）..." class="flex-1 w-full rounded-xl border border-purple-300 bg-white p-2.5 text-sm text-slate-800">
                         <div class="flex gap-2 w-full sm:w-auto">
@@ -145,7 +243,7 @@
                 <!-- 現有帳號清單 -->
                 <div class="space-y-2.5">
                     <div class="flex items-center justify-between">
-                        <h4 class="font-extrabold text-slate-800 text-base">現有帳號清單</h4>
+                        <h4 class="font-extrabold text-slate-800 text-base">現有系統帳號清單</h4>
                         <button type="button" id="adminRefreshUsersBtn" class="text-purple-700 hover:text-purple-900 font-bold text-sm flex items-center gap-1 cursor-pointer">
                             <i class="fa-solid fa-rotate"></i> 重新整理
                         </button>
@@ -313,20 +411,31 @@
                         </div>
 
                         <div class="p-5 rounded-2xl bg-indigo-50/90 border border-indigo-200/80 shadow-sm space-y-4">
-                            <h3 class="font-bold text-indigo-950 flex items-center gap-2 text-lg">
-                                <i class="fa-solid fa-file-signature text-indigo-600"></i> 簽核架構設定
-                            </h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <h3 class="font-bold text-indigo-950 flex items-center gap-2 text-lg">
+                                    <i class="fa-solid fa-file-signature text-indigo-600"></i> 簽核架構設定
+                                </h3>
+                                <span class="text-xs sm:text-sm font-extrabold text-indigo-800 bg-white px-3 py-1 rounded-full border border-indigo-200">
+                                    流程：申請人 ➔ 子計畫負責人 ➔ 各範疇副召集人
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div>
-                                    <label class="block text-sm font-bold text-indigo-950 mb-1.5">申請人姓名 (系統自動帶入)</label>
+                                    <label class="block text-sm font-bold text-indigo-950 mb-1.5">1. 申請人 (系統自動帶入)</label>
                                     <div class="w-full rounded-xl border border-indigo-300 bg-indigo-100/70 p-2.5 text-base text-indigo-950 font-bold flex items-center gap-2">
                                         <i class="fa-solid fa-user-check text-indigo-600"></i>
                                         <span id="formApplicantDisplay">未登入</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-bold text-indigo-950 mb-1.5">審核主管 / 子計畫負責人 <span class="text-indigo-600">*</span></label>
+                                    <label class="block text-sm font-bold text-indigo-950 mb-1.5">2. 子計畫負責人 (第一關) <span class="text-indigo-600">*</span></label>
                                     <select id="approverName" required class="w-full rounded-xl border border-indigo-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-indigo-500 font-medium">
+                                        <option value="">請先選擇流出範疇...</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-indigo-950 mb-1.5">3. 各範疇副召集人 (第二關) <span class="text-indigo-600">*</span></label>
+                                    <select id="viceConvenerName" required class="w-full rounded-xl border border-indigo-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-indigo-500 font-medium">
                                         <option value="">請先選擇流出範疇...</option>
                                     </select>
                                 </div>
@@ -371,6 +480,15 @@
                             <label class="block text-sm font-bold text-purple-950 mb-1">申請人姓名</label>
                             <input type="text" id="queryApplicantName" placeholder="請輸入申請人姓名..." class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
                         </div>
+                        <div>
+                            <label class="block text-sm font-bold text-purple-950 mb-1">審核狀態篩選</label>
+                            <select id="queryStatusFilter" class="w-full rounded-xl border border-purple-300 bg-white p-2.5 text-base text-slate-800 focus:ring-2 focus:ring-purple-500 font-medium">
+                                <option value="ALL">全部狀態</option>
+                                <option value="PENDING">待審核</option>
+                                <option value="APPROVED">核准</option>
+                                <option value="REJECTED">退件</option>
+                            </select>
+                        </div>
                         <button type="button" id="queryCasesBtn" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-base cursor-pointer">
                             <i class="fa-solid fa-search"></i> 查詢申請案件
                         </button>
@@ -398,8 +516,73 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const displayUserName = document.getElementById('displayUserName');
         const displayUserRoleBadge = document.getElementById('displayUserRoleBadge');
+        const openWorkflowConfigBtn = document.getElementById('openWorkflowConfigBtn');
         const openAdminPanelBtn = document.getElementById('openAdminPanelBtn');
         const formApplicantDisplay = document.getElementById('formApplicantDisplay');
+
+        // 依據使用者的授權範疇與子計畫限制表單選項（僅限制「流出」，「流入」完全不限制）
+        function applyUserScopeRestrictions(authObj) {
+            const fromCatSelect = document.getElementById('fromCategorySelect');
+            const fromSubSelect = document.getElementById('fromSubProjectSelect');
+            const toCatSelect = document.getElementById('toCategorySelect');
+            const toSubSelect = document.getElementById('toSubProjectSelect');
+
+            // 確保「流入」範疇與子計畫永遠不受使用者授權範圍限制
+            if (toCatSelect) {
+                toCatSelect.disabled = false;
+                toCatSelect.classList.remove('bg-slate-100', 'cursor-not-allowed');
+            }
+            if (toSubSelect) {
+                toSubSelect.disabled = false;
+                toSubSelect.classList.remove('bg-slate-100', 'cursor-not-allowed');
+            }
+
+            if (!fromCatSelect || !fromSubSelect) return;
+
+            const allowedScope = (authObj && authObj.allowedScope) ? String(authObj.allowedScope).trim() : "全部";
+            const allowedSub = (authObj && authObj.allowedSubProject) ? String(authObj.allowedSubProject).trim() : "全部";
+            const isAdmin = authObj && authObj.role === "管理者";
+
+            // 還原流出範疇選項
+            const allScopes = ["範疇一", "範疇二", "範疇三", "範疇四"];
+            fromCatSelect.innerHTML = '<option value="">請選擇範疇...</option>';
+            allScopes.forEach(sc => {
+                if (isAdmin || allowedScope === "" || allowedScope === "全部" || allowedScope === sc) {
+                    const opt = document.createElement('option');
+                    opt.value = sc;
+                    opt.textContent = sc;
+                    fromCatSelect.appendChild(opt);
+                }
+            });
+
+            // 若有限定單一流出範疇，自動選取並鎖定流出範疇
+            if (!isAdmin && allowedScope !== "" && allowedScope !== "全部") {
+                fromCatSelect.value = allowedScope;
+                fromCatSelect.disabled = true;
+                fromCatSelect.classList.add('bg-slate-100', 'cursor-not-allowed');
+                fromCatSelect.dispatchEvent(new Event('change'));
+
+                // 若同時限定單一流出子計畫，過濾並自動鎖定流出子計畫
+                if (allowedSub !== "" && allowedSub !== "全部") {
+                    fromSubSelect.innerHTML = '';
+                    const opt = document.createElement('option');
+                    opt.value = allowedSub;
+                    opt.textContent = allowedSub;
+                    fromSubSelect.appendChild(opt);
+                    fromSubSelect.value = allowedSub;
+                    fromSubSelect.disabled = true;
+                    fromSubSelect.classList.add('bg-slate-100', 'cursor-not-allowed');
+                } else {
+                    fromSubSelect.disabled = false;
+                    fromSubSelect.classList.remove('bg-slate-100', 'cursor-not-allowed');
+                }
+            } else {
+                fromCatSelect.disabled = false;
+                fromCatSelect.classList.remove('bg-slate-100', 'cursor-not-allowed');
+                fromSubSelect.disabled = false;
+                fromSubSelect.classList.remove('bg-slate-100', 'cursor-not-allowed');
+            }
+        }
 
         // 讀取當前工作階段登入資訊
         let currentAuth = null;
@@ -413,25 +596,32 @@
         function applyLoggedInUserUI(authObj) {
             currentAuth = authObj;
             displayUserName.textContent = authObj.userName;
-            formApplicantDisplay.textContent = authObj.userName;
+            if (formApplicantDisplay) formApplicantDisplay.textContent = authObj.userName;
             document.getElementById('queryApplicantName').value = authObj.userName;
-            
-            // 嚴格判斷是否為管理者，一般使用者完全隱藏帳號管理按鈕與彈窗
+
+            // 嚴格判斷是否為管理者，一般使用者完全隱藏管理按鈕與彈窗
             if (authObj && authObj.role === "管理者") {
                 displayUserRoleBadge.classList.remove('hidden');
                 displayUserRoleBadge.style.display = 'inline-block';
                 openAdminPanelBtn.classList.remove('hidden');
                 openAdminPanelBtn.style.display = 'inline-flex';
+                openWorkflowConfigBtn.classList.remove('hidden');
+                openWorkflowConfigBtn.style.display = 'inline-flex';
             } else {
                 displayUserRoleBadge.classList.add('hidden');
                 displayUserRoleBadge.style.display = 'none';
                 openAdminPanelBtn.classList.add('hidden');
                 openAdminPanelBtn.style.display = 'none';
+                openWorkflowConfigBtn.classList.add('hidden');
+                openWorkflowConfigBtn.style.display = 'none';
                 adminUsersModal.classList.add('hidden');
+                workflowConfigModal.classList.add('hidden');
             }
 
             authGateModal.classList.add('hidden');
             mainAppContainer.classList.remove('hidden');
+            applyUserScopeRestrictions(authObj);
+            loadPublicApprovers();
         }
 
         // 若同一分頁已登入過則直接還原狀態
@@ -470,7 +660,9 @@
                         account: data.account,
                         password: password,
                         userName: data.userName,
-                        role: data.role || "一般使用者"
+                        role: data.role || "一般使用者",
+                        allowedScope: data.allowedScope || "全部",
+                        allowedSubProject: data.allowedSubProject || "全部"
                     };
                     sessionStorage.setItem('budget_app_user_auth', JSON.stringify(authObj));
                     applyLoggedInUserUI(authObj);
@@ -507,10 +699,202 @@
             displayUserRoleBadge.style.display = 'none';
             openAdminPanelBtn.classList.add('hidden');
             openAdminPanelBtn.style.display = 'none';
+            openWorkflowConfigBtn.classList.add('hidden');
+            openWorkflowConfigBtn.style.display = 'none';
             adminUsersModal.classList.add('hidden');
+            workflowConfigModal.classList.add('hidden');
             mainAppContainer.classList.add('hidden');
             authGateModal.classList.remove('hidden');
         });
+
+        // ================= 管理者簽核流程人員設定模組 =================
+        const workflowConfigModal = document.getElementById('workflowConfigModal');
+        const closeWorkflowConfigModal = document.getElementById('closeWorkflowConfigModal');
+        const wfListContainer = document.getElementById('wfListContainer');
+        const wfRefreshBtn = document.getElementById('wfRefreshBtn');
+        const wfSaveBtn = document.getElementById('wfSaveBtn');
+        const wfClearFormBtn = document.getElementById('wfClearFormBtn');
+        const wfTargetRowIndex = document.getElementById('wfTargetRowIndex');
+        const wfTargetScope = document.getElementById('wfTargetScope');
+        const wfTargetRoleType = document.getElementById('wfTargetRoleType');
+        const wfTargetName = document.getElementById('wfTargetName');
+        const wfTargetEmail = document.getElementById('wfTargetEmail');
+        const wfTargetPin = document.getElementById('wfTargetPin');
+
+        function clearWfForm() {
+            wfTargetRowIndex.value = "";
+            wfTargetScope.value = "範疇一";
+            wfTargetRoleType.value = "子計畫負責人";
+            wfTargetName.value = "";
+            wfTargetEmail.value = "";
+            wfTargetPin.value = "";
+        }
+
+        wfClearFormBtn.addEventListener('click', clearWfForm);
+
+        async function loadAdminApproversList() {
+            if (!currentAuth || currentAuth.role !== "管理者") return;
+            wfListContainer.innerHTML = `<div class="p-6 text-center text-indigo-700 font-bold"><i class="fa-solid fa-spinner fa-spin"></i> 正在載入簽核人員設定...</div>`;
+
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getAdminApprovers&account=${encodeURIComponent(currentAuth.account)}&password=${encodeURIComponent(currentAuth.password)}`);
+                const data = await res.json();
+
+                if (data.status === "success") {
+                    const list = data.approvers || [];
+                    if (list.length === 0) {
+                        wfListContainer.innerHTML = `<div class="p-6 text-center text-slate-500">目前尚無簽核人員設定資料。</div>`;
+                        return;
+                    }
+
+                    let html = `
+                        <table class="w-full text-left border-collapse bg-white text-sm">
+                            <thead>
+                                <tr class="bg-indigo-100 text-indigo-950 border-b border-indigo-200">
+                                    <th class="p-2.5 font-extrabold">範疇</th>
+                                    <th class="p-2.5 font-extrabold">簽核關卡角色</th>
+                                    <th class="p-2.5 font-extrabold">姓名</th>
+                                    <th class="p-2.5 font-extrabold">通知信箱</th>
+                                    <th class="p-2.5 font-extrabold">審核密碼</th>
+                                    <th class="p-2.5 font-extrabold text-center">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-indigo-100">
+                    `;
+
+                    list.forEach(item => {
+                        const isVC = item.roleType === "各範疇副召集人";
+                        const badge = isVC
+                            ? `<span class="px-2 py-0.5 bg-purple-100 text-purple-800 font-bold rounded text-xs border border-purple-300">第二關：各範疇副召集人</span>`
+                            : `<span class="px-2 py-0.5 bg-sky-100 text-sky-800 font-bold rounded text-xs border border-sky-300">第一關：子計畫負責人</span>`;
+
+                        html += `
+                            <tr class="hover:bg-indigo-50/50">
+                                <td class="p-2.5 font-bold text-indigo-950">${item.scope}</td>
+                                <td class="p-2.5">${badge}</td>
+                                <td class="p-2.5 font-bold text-slate-800">${item.name}</td>
+                                <td class="p-2.5 text-slate-600">${item.email}</td>
+                                <td class="p-2.5 font-mono font-bold text-slate-700">${item.pin}</td>
+                                <td class="p-2.5 text-center space-x-1.5 whitespace-nowrap">
+                                    <button type="button" onclick="editWfApprover(${item.rowIndex}, '${item.scope}', '${item.roleType}', '${item.name.replace(/'/g, "\\'")}', '${item.email.replace(/'/g, "\\'")}', '${item.pin.replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-bold rounded-lg text-xs cursor-pointer">編輯</button>
+                                    <button type="button" onclick="deleteWfApprover(${item.rowIndex}, '${item.name.replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-rose-100 hover:bg-rose-200 text-rose-800 font-bold rounded-lg text-xs cursor-pointer">刪除</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                    html += `</tbody></table>`;
+                    wfListContainer.innerHTML = html;
+                } else {
+                    wfListContainer.innerHTML = `<div class="p-4 text-rose-700 font-bold bg-rose-50">${data.message}</div>`;
+                }
+            } catch (err) {
+                console.error(err);
+                wfListContainer.innerHTML = `<div class="p-4 text-rose-700 font-bold bg-rose-50">載入失敗，請檢查網路連線。</div>`;
+            }
+        }
+
+        window.editWfApprover = function(rowIndex, scope, roleType, name, email, pin) {
+            wfTargetRowIndex.value = rowIndex;
+            wfTargetScope.value = scope;
+            wfTargetRoleType.value = roleType;
+            wfTargetName.value = name;
+            wfTargetEmail.value = email;
+            wfTargetPin.value = pin;
+        };
+
+        window.deleteWfApprover = async function(rowIndex, name) {
+            if (!currentAuth || currentAuth.role !== "管理者") return;
+            wfListContainer.innerHTML = `<div class="p-6 text-center text-rose-700 font-bold"><i class="fa-solid fa-spinner fa-spin"></i> 正在刪除 [${name}]...</div>`;
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: "deleteApprover",
+                        adminAccount: currentAuth.account,
+                        adminPassword: currentAuth.password,
+                        rowIndex: rowIndex
+                    })
+                });
+                setTimeout(() => {
+                    loadAdminApproversList();
+                    loadPublicApprovers();
+                }, 800);
+            } catch (err) {
+                console.error(err);
+                showCustomMessage("刪除簽核人員時發生錯誤。", "錯誤");
+                loadAdminApproversList();
+            }
+        };
+
+        wfSaveBtn.addEventListener('click', async () => {
+            if (!currentAuth || currentAuth.role !== "管理者") return;
+            const rowIndex = wfTargetRowIndex.value;
+            const scope = wfTargetScope.value;
+            const roleType = wfTargetRoleType.value;
+            const name = wfTargetName.value.trim();
+            const email = wfTargetEmail.value.trim();
+            const pin = wfTargetPin.value.trim();
+
+            if (!name || !email || !pin) {
+                showCustomMessage("請完整填寫「姓名」、「通知信箱」與「審核密碼」！", "提示");
+                return;
+            }
+
+            wfSaveBtn.disabled = true;
+            wfSaveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> 儲存中...`;
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: "saveApprover",
+                        adminAccount: currentAuth.account,
+                        adminPassword: currentAuth.password,
+                        rowIndex,
+                        scope,
+                        roleType,
+                        name,
+                        email,
+                        pin
+                    })
+                });
+                clearWfForm();
+                setTimeout(() => {
+                    loadAdminApproversList();
+                    loadPublicApprovers();
+                    showCustomMessage(`簽核人員 [${name}] 設定已儲存！`, "成功");
+                }, 800);
+            } catch (err) {
+                console.error(err);
+                showCustomMessage("儲存簽核人員時發生錯誤。", "錯誤");
+            } finally {
+                wfSaveBtn.disabled = false;
+                wfSaveBtn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> 儲存簽核人員設定`;
+            }
+        });
+
+        openWorkflowConfigBtn.addEventListener('click', () => {
+            if (!currentAuth || currentAuth.role !== "管理者") {
+                showCustomMessage("權限不足：僅管理者可使用簽核流程設定！", "存取拒絕");
+                return;
+            }
+            clearWfForm();
+            workflowConfigModal.classList.remove('hidden');
+            loadAdminApproversList();
+        });
+
+        closeWorkflowConfigModal.addEventListener('click', () => {
+            workflowConfigModal.classList.add('hidden');
+        });
+
+        wfRefreshBtn.addEventListener('click', loadAdminApproversList);
+        // =============================================================
 
         // ================= 管理者帳號管理模組 =================
         const adminUsersModal = document.getElementById('adminUsersModal');
@@ -523,7 +907,37 @@
         const adminTargetPwd = document.getElementById('adminTargetPwd');
         const adminTargetName = document.getElementById('adminTargetName');
         const adminTargetRole = document.getElementById('adminTargetRole');
+        const adminScopeLimitRow = document.getElementById('adminScopeLimitRow');
+        const adminTargetScope = document.getElementById('adminTargetScope');
+        const adminTargetSubProject = document.getElementById('adminTargetSubProject');
         const adminTargetNote = document.getElementById('adminTargetNote');
+
+        function updateAdminSubProjectOptions(selectedScope, preselectSub = "全部") {
+            adminTargetSubProject.innerHTML = '<option value="全部">全部子計畫 (不限制)</option>';
+            if (selectedScope && selectedScope !== "全部" && subProjectsData[selectedScope]) {
+                subProjectsData[selectedScope].forEach(proj => {
+                    const opt = document.createElement('option');
+                    opt.value = proj;
+                    opt.textContent = proj;
+                    adminTargetSubProject.appendChild(opt);
+                });
+            }
+            adminTargetSubProject.value = preselectSub || "全部";
+        }
+
+        adminTargetScope.addEventListener('change', function() {
+            updateAdminSubProjectOptions(this.value, "全部");
+        });
+
+        adminTargetRole.addEventListener('change', function() {
+            if (this.value === "管理者") {
+                adminTargetScope.value = "全部";
+                updateAdminSubProjectOptions("全部", "全部");
+                adminScopeLimitRow.classList.add('opacity-50', 'pointer-events-none');
+            } else {
+                adminScopeLimitRow.classList.remove('opacity-50', 'pointer-events-none');
+            }
+        });
 
         function clearAdminForm() {
             adminTargetAcc.value = "";
@@ -531,6 +945,9 @@
             adminTargetPwd.value = "";
             adminTargetName.value = "";
             adminTargetRole.value = "一般使用者";
+            adminScopeLimitRow.classList.remove('opacity-50', 'pointer-events-none');
+            adminTargetScope.value = "全部";
+            updateAdminSubProjectOptions("全部", "全部");
             adminTargetNote.value = "";
         }
 
@@ -547,41 +964,46 @@
                 if (data.status === "success") {
                     const users = data.users || [];
                     if (users.length === 0) {
-                        adminUsersListContainer.innerHTML = `<div class="p-6 text-center text-slate-500">目前尚無任何帳號資料。</div>`;
+                        adminUsersListContainer.innerHTML = `<div class="p-6 text-center text-slate-500">目前尚無使用者帳號資料。</div>`;
                         return;
                     }
 
                     let tableHtml = `
-                        <table class="w-full text-left border-collapse bg-white text-base">
+                        <table class="w-full text-left border-collapse bg-white text-sm">
                             <thead>
                                 <tr class="bg-purple-100 text-purple-950 border-b border-purple-200">
-                                    <th class="p-3 font-extrabold">帳號</th>
-                                    <th class="p-3 font-extrabold">密碼</th>
-                                    <th class="p-3 font-extrabold">使用者姓名</th>
-                                    <th class="p-3 font-extrabold">角色權限</th>
-                                    <th class="p-3 font-extrabold">備註</th>
-                                    <th class="p-3 font-extrabold text-center">操作</th>
+                                    <th class="p-2.5 font-extrabold">帳號</th>
+                                    <th class="p-2.5 font-extrabold">密碼</th>
+                                    <th class="p-2.5 font-extrabold">使用者姓名</th>
+                                    <th class="p-2.5 font-extrabold">角色權限</th>
+                                    <th class="p-2.5 font-extrabold">授權範疇 / 子計畫</th>
+                                    <th class="p-2.5 font-extrabold">備註</th>
+                                    <th class="p-2.5 font-extrabold text-center">操作</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-purple-100">
                     `;
 
                     users.forEach(u => {
-                        const isAdmin = u.role === "管理者";
-                        const roleBadge = isAdmin 
+                        const isAdm = u.role === "管理者";
+                        const roleBadge = isAdm
                             ? `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 font-bold rounded text-xs border border-amber-300">管理者</span>`
-                            : `<span class="px-2 py-0.5 bg-slate-100 text-slate-700 font-bold rounded text-xs border border-slate-200">一般使用者</span>`;
+                            : `<span class="px-2 py-0.5 bg-slate-100 text-slate-700 font-bold rounded text-xs border border-slate-300">一般使用者</span>`;
+                        const scopeDisplay = isAdm || !u.allowedScope || u.allowedScope === "全部"
+                            ? `<span class="text-slate-500 text-xs">全部不限</span>`
+                            : `<span class="text-xs font-bold text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">${u.allowedScope}${u.allowedSubProject && u.allowedSubProject !== '全部' ? ' / ' + u.allowedSubProject : ''}</span>`;
 
                         tableHtml += `
                             <tr class="hover:bg-purple-50/50">
-                                <td class="p-3 font-bold text-purple-900">${u.account}</td>
-                                <td class="p-3 font-mono text-slate-700">${u.password}</td>
-                                <td class="p-3 font-bold text-slate-800">${u.userName}</td>
-                                <td class="p-3">${roleBadge}</td>
-                                <td class="p-3 text-sm text-slate-600">${u.note || '-'}</td>
-                                <td class="p-3 text-center space-x-2 whitespace-nowrap">
-                                    <button type="button" onclick="editAdminUser('${u.account.replace(/'/g, "\\'")}', '${u.password.replace(/'/g, "\\'")}', '${u.userName.replace(/'/g, "\\'")}', '${u.role}', '${(u.note || '').replace(/'/g, "\\'")}')" class="px-3 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-bold rounded-lg text-sm cursor-pointer">編輯</button>
-                                    ${u.account !== currentAuth.account ? `<button type="button" onclick="deleteAdminUser('${u.account.replace(/'/g, "\\'")}')" class="px-3 py-1 bg-rose-100 hover:bg-rose-200 text-rose-800 font-bold rounded-lg text-sm cursor-pointer">刪除</button>` : ''}
+                                <td class="p-2.5 font-mono font-bold text-purple-950">${u.account}</td>
+                                <td class="p-2.5 font-mono text-slate-700">${u.password}</td>
+                                <td class="p-2.5 font-bold text-slate-800">${u.userName}</td>
+                                <td class="p-2.5">${roleBadge}</td>
+                                <td class="p-2.5">${scopeDisplay}</td>
+                                <td class="p-2.5 text-slate-600">${u.note || '-'}</td>
+                                <td class="p-2.5 text-center space-x-1.5 whitespace-nowrap">
+                                    <button type="button" onclick="editAdminUser('${u.account.replace(/'/g, "\\'")}', '${u.password.replace(/'/g, "\\'")}', '${u.userName.replace(/'/g, "\\'")}', '${u.role}', '${(u.allowedScope || '全部').replace(/'/g, "\\'")}', '${(u.allowedSubProject || '全部').replace(/'/g, "\\'")}', '${(u.note || '').replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-bold rounded-lg text-xs cursor-pointer">編輯</button>
+                                    <button type="button" onclick="deleteAdminUser('${u.account.replace(/'/g, "\\'")}')" class="px-2.5 py-1 bg-rose-100 hover:bg-rose-200 text-rose-800 font-bold rounded-lg text-xs cursor-pointer">刪除</button>
                                 </td>
                             </tr>
                         `;
@@ -598,12 +1020,21 @@
             }
         }
 
-        window.editAdminUser = function(acc, pwd, name, role, note) {
+        window.editAdminUser = function(acc, pwd, name, role, allowedScope, allowedSubProject, note) {
             adminTargetAcc.value = acc;
             adminTargetAcc.disabled = true; // 編輯時鎖定帳號名稱作為主鍵
             adminTargetPwd.value = pwd;
             adminTargetName.value = name;
             adminTargetRole.value = role === "管理者" ? "管理者" : "一般使用者";
+            if (adminTargetRole.value === "管理者") {
+                adminTargetScope.value = "全部";
+                updateAdminSubProjectOptions("全部", "全部");
+                adminScopeLimitRow.classList.add('opacity-50', 'pointer-events-none');
+            } else {
+                adminScopeLimitRow.classList.remove('opacity-50', 'pointer-events-none');
+                adminTargetScope.value = allowedScope || "全部";
+                updateAdminSubProjectOptions(adminTargetScope.value, allowedSubProject || "全部");
+            }
             adminTargetNote.value = note;
         };
 
@@ -639,6 +1070,8 @@
             const targetPassword = adminTargetPwd.value.trim();
             const targetName = adminTargetName.value.trim();
             const targetRole = adminTargetRole.value;
+            const targetScope = targetRole === "管理者" ? "全部" : adminTargetScope.value;
+            const targetSubProject = (targetRole === "管理者" || targetScope === "全部") ? "全部" : adminTargetSubProject.value;
             const targetNote = adminTargetNote.value.trim();
 
             if (!targetAccount || !targetPassword || !targetName) {
@@ -662,6 +1095,8 @@
                         targetPassword,
                         targetName,
                         targetRole,
+                        targetScope,
+                        targetSubProject,
                         targetNote
                     })
                 });
@@ -694,7 +1129,9 @@
             adminUsersModal.classList.add('hidden');
         });
 
-        adminRefreshUsersBtn.addEventListener('click', loadAdminUsersList);
+        if (adminRefreshUsersBtn) {
+            adminRefreshUsersBtn.addEventListener('click', loadAdminUsersList);
+        }
         // =======================================================
 
         function showCustomMessage(message, title = "系統提示") {
@@ -725,18 +1162,54 @@
             "管理費": ["管理費"]
         };
 
-        const approversByScope = {
-            "範疇一": ["劉季惠", "蔡斗元", "唐家沛", "曾志恩", "林真福", "陳可家", "李紀慧"],
-            "範疇二": ["陳弘美", "李宜恭"],
-            "範疇三": ["黃智瑋", "林庭光"],
-            "範疇四": ["葉明憲", "楊佳瑜", "鄭秀晶", "陳佳蓉", "陳敬森", "顏貴珍", "陳志偉", "劉鎮榮"]
-        };
+        // 預設簽核人員對照（後端載入完成後會自動更新為最新設定）
+        let dynamicApproversData = [
+            { scope: "範疇一", roleType: "子計畫負責人", name: "劉季惠" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "蔡斗元" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "唐家沛" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "曾志恩" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "林真福" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "陳可家" },
+            { scope: "範疇一", roleType: "子計畫負責人", name: "李紀慧" },
+            { scope: "範疇一", roleType: "各範疇副召集人", name: "範疇一副召集人" },
+            { scope: "範疇二", roleType: "子計畫負責人", name: "陳弘美" },
+            { scope: "範疇二", roleType: "子計畫負責人", name: "李宜恭" },
+            { scope: "範疇二", roleType: "各範疇副召集人", name: "範疇二副召集人" },
+            { scope: "範疇三", roleType: "子計畫負責人", name: "黃智瑋" },
+            { scope: "範疇三", roleType: "子計畫負責人", name: "林庭光" },
+            { scope: "範疇三", roleType: "各範疇副召集人", name: "範疇三副召集人" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "葉明憲" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "楊佳瑜" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "鄭秀晶" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "陳佳蓉" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "陳敬森" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "顏貴珍" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "陳志偉" },
+            { scope: "範疇四", roleType: "子計畫負責人", name: "劉鎮榮" },
+            { scope: "範疇四", roleType: "各範疇副召集人", name: "範疇四副召集人" }
+        ];
+
+        async function loadPublicApprovers() {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?action=getPublicApprovers&_t=${Date.now()}`);
+                const data = await res.json();
+                if (data.status === "success" && Array.isArray(data.approvers) && data.approvers.length > 0) {
+                    dynamicApproversData = data.approvers;
+                    if (fromCategorySelect.value) {
+                        updateApproverDropdownsByScope(fromCategorySelect.value);
+                    }
+                }
+            } catch (e) {
+                console.warn("無法載入最新簽核人員清單，使用預設值", e);
+            }
+        }
 
         const fromCategorySelect = document.getElementById('fromCategorySelect');
         const fromSubProjectSelect = document.getElementById('fromSubProjectSelect');
         const toCategorySelect = document.getElementById('toCategorySelect');
         const toSubProjectSelect = document.getElementById('toSubProjectSelect');
         const approverNameSelect = document.getElementById('approverName');
+        const viceConvenerNameSelect = document.getElementById('viceConvenerName');
         const fromItem = document.getElementById('fromItem');
         const toItem = document.getElementById('toItem');
         const fromDetail = document.getElementById('fromDetail');
@@ -751,6 +1224,32 @@
         const summaryContent = document.getElementById('summaryContent');
         const budgetForm = document.getElementById('budgetForm');
 
+        function updateApproverDropdownsByScope(selectedCat) {
+            approverNameSelect.innerHTML = '<option value="">請選擇子計畫負責人...</option>';
+            viceConvenerNameSelect.innerHTML = '<option value="">請選擇各範疇副召集人...</option>';
+
+            if (!selectedCat) return;
+
+            const leaders = dynamicApproversData.filter(a => String(a.scope || "").trim() === selectedCat && String(a.roleType || "").trim() === "子計畫負責人");
+            leaders.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.name;
+                opt.textContent = `${selectedCat} - ${item.name}`;
+                approverNameSelect.appendChild(opt);
+            });
+
+            const vcs = dynamicApproversData.filter(a => String(a.scope || "").trim() === selectedCat && (String(a.roleType || "").trim() === "各範疇副召集人" || String(a.roleType || "").trim().indexOf("副召集人") !== -1));
+            vcs.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.name;
+                opt.textContent = `${selectedCat} - ${item.name}`;
+                viceConvenerNameSelect.appendChild(opt);
+            });
+            if (vcs.length === 1) {
+                viceConvenerNameSelect.value = vcs[0].name;
+            }
+        }
+
         fromCategorySelect.addEventListener('change', function() {
             const selectedCat = this.value;
             fromSubProjectSelect.innerHTML = '<option value="">請選擇子計畫...</option>';
@@ -762,15 +1261,7 @@
                     fromSubProjectSelect.appendChild(opt);
                 });
             }
-            approverNameSelect.innerHTML = '<option value="">請選擇審核主管/負責人...</option>';
-            if (selectedCat && approversByScope[selectedCat]) {
-                approversByScope[selectedCat].forEach(name => {
-                    const opt = document.createElement('option');
-                    opt.value = name;
-                    opt.textContent = `${selectedCat} - ${name}`;
-                    approverNameSelect.appendChild(opt);
-                });
-            }
+            updateApproverDropdownsByScope(selectedCat);
         });
 
         toCategorySelect.addEventListener('change', function() {
@@ -901,14 +1392,11 @@
                             <strong class="text-purple-900">變更類型：</strong>
                             <span class="font-bold text-purple-950 block bg-purple-100 p-2 rounded-xl mt-1">${rType}</span>
                         </div>
-                        <hr class="border-purple-200">
-                        <div class="space-y-1">
-                            <strong class="text-rose-800 text-base flex items-center gap-1.5"><i class="fa-solid fa-circle-minus text-rose-600"></i> 經費流出項目：</strong>
-                            <div class="pl-2 text-slate-800 space-y-1 mt-1">
-                                <div><strong>流出子計畫：</strong> <span class="text-rose-900 font-bold">${fCatName} - ${fSubProj}</span></div>
-                                <div><strong>細項名稱：</strong> <span class="font-bold text-rose-800 bg-rose-100 px-2 py-0.5 rounded border border-rose-200">${fromDetail.value}</span></div>
-                                <div><strong>流出金額：</strong> <span class="font-extrabold text-rose-700 text-base">$${fVal.toLocaleString()}</span></div>
-                            </div>
+                        <div class="bg-indigo-50 p-2.5 rounded-xl border border-indigo-200 text-xs sm:text-sm">
+                            <strong class="text-indigo-950 block mb-1">簽核流程路徑：</strong>
+                            <span class="text-indigo-900 font-bold">
+                                ${currentAuth ? currentAuth.userName : '申請人'} ➔ ${approverNameSelect.value} (子計畫負責人) ➔ ${viceConvenerNameSelect.value} (副召集人)
+                            </span>
                         </div>
                         <hr class="border-purple-200">
                         <div class="space-y-1">
@@ -957,7 +1445,8 @@
                 toAmount: toAmount.value,
                 reasonType: reasonTypeVal,
                 reason: reasonDetailVal,
-                approverName: approverNameSelect.value
+                approverName: approverNameSelect.value,
+                viceConvenerName: viceConvenerNameSelect.value
             };
 
             try {
@@ -967,7 +1456,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
-                showSuccessModal(payload.approverName);
+                showSuccessModal(payload.approverName, payload.viceConvenerName);
             } catch (err) {
                 console.error(err);
                 showCustomMessage("送出時發生網路錯誤，請檢查連線或稍後再試。", "錯誤");
@@ -976,7 +1465,7 @@
             }
         });
 
-        function showSuccessModal(approverName) {
+        function showSuccessModal(approverName, viceConvenerName) {
             const modal = document.createElement('div');
             modal.className = "fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 text-base";
             modal.innerHTML = `
@@ -985,7 +1474,9 @@
                         <i class="fa-solid fa-paper-plane"></i>
                     </div>
                     <h3 class="text-2xl font-extrabold text-slate-900">變更申請已成功送出！</h3>
-                    <p class="text-base text-slate-700 leading-relaxed font-medium">資料已寫入系統，並已發送通知信給主管 <strong class="text-purple-800 font-extrabold">${approverName}</strong> 前往專屬審核網頁。</p>
+                    <p class="text-base text-slate-700 leading-relaxed font-medium">
+                        資料已寫入系統，並已發送第一關通知信給子計畫負責人 <strong class="text-purple-800 font-extrabold">${approverName}</strong>；核准後將自動轉呈副召集人 <strong class="text-indigo-800 font-extrabold">${viceConvenerName}</strong> 複審。
+                    </p>
                     <button id="closeModal" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-2xl shadow-lg transition cursor-pointer text-base">確定</button>
                 </div>
             `;
@@ -993,6 +1484,9 @@
             document.getElementById('closeModal').addEventListener('click', () => {
                 modal.remove();
                 budgetForm.reset();
+                if (currentAuth) {
+                    applyUserScopeRestrictions(currentAuth);
+                }
                 submitBtn.disabled = true;
                 submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 ruleAlert.classList.add('hidden');
@@ -1002,10 +1496,12 @@
 
         const queryCasesBtn = document.getElementById('queryCasesBtn');
         const queryApplicantName = document.getElementById('queryApplicantName');
+        const queryStatusFilter = document.getElementById('queryStatusFilter');
         const queryResultContainer = document.getElementById('queryResultContainer');
 
         queryCasesBtn.addEventListener('click', async function() {
             const name = queryApplicantName.value.trim();
+            const statusFilter = queryStatusFilter.value;
             if (!name) {
                 showCustomMessage("請輸入欲查詢的申請人姓名！", "提示");
                 return;
@@ -1019,15 +1515,30 @@
             `;
 
             try {
-                const res = await fetch(`${SCRIPT_URL}?action=queryByApplicant&applicant=${encodeURIComponent(name)}`);
+                const res = await fetch(`${SCRIPT_URL}?action=queryByApplicant&applicant=${encodeURIComponent(name)}&_t=${Date.now()}`);
                 const data = await res.json();
 
                 if (data.status === "success") {
-                    const cases = data.cases || [];
+                    const allCases = data.cases || [];
+                    const cases = allCases.filter(item => {
+                        const st = String(item.status || '待審核').trim();
+                        if (statusFilter === 'PENDING') {
+                            return st.indexOf('待審核') !== -1;
+                        }
+                        if (statusFilter === 'APPROVED') {
+                            return st === '核准' || st === '同意';
+                        }
+                        if (statusFilter === 'REJECTED') {
+                            return st === '退件' || st === '不同意';
+                        }
+                        return true;
+                    });
+
                     if (cases.length === 0) {
+                        const filterText = statusFilter === 'ALL' ? '' : `（篩選條件：${queryStatusFilter.options[queryStatusFilter.selectedIndex].text}）`;
                         queryResultContainer.innerHTML = `
                             <div class="p-4 bg-slate-100 text-slate-700 text-base font-medium rounded-xl text-center border border-slate-200">
-                                查無「${name}」提交的變更申請紀錄。
+                                查無「${name}」符合條件的變更申請紀錄${filterText}。
                             </div>
                         `;
                         return;
@@ -1045,10 +1556,16 @@
                                     <span class="font-extrabold text-purple-900">#${item.rowIndex} (${item.timestamp || '無時間'})</span>
                                     <span class="px-2.5 py-0.5 text-xs font-extrabold rounded-full border ${statusBadgeClass}">${item.status || '待審核'}</span>
                                 </div>
-                                <div class="text-slate-700 text-sm space-y-1 bg-purple-50/50 p-2.5 rounded-xl border border-purple-100">
-                                    <div><strong class="text-rose-800">流出：</strong> ${item.fromDetail || '細項'} ($${Number(item.fromAmount || 0).toLocaleString()})</div>
-                                    <div><strong class="text-emerald-800">流入：</strong> ${item.toDetail || '細項'} ($${Number(item.toAmount || 0).toLocaleString()})</div>
-                                    <div><strong>審核主管：</strong> ${item.approverName || '未指定'}</div>
+                                <div class="text-slate-700 text-sm space-y-2 bg-purple-50/50 p-3 rounded-xl border border-purple-100">
+                                    <div class="bg-rose-50/90 p-2.5 rounded-lg border border-rose-200/80 space-y-1">
+                                        <div><strong class="text-rose-900">流出子計畫名稱：</strong> <span class="text-rose-950 font-bold">${item.fromSubProject || '未記錄'}</span></div>
+                                        <div><strong class="text-rose-800">流出細項：</strong> ${item.fromDetail || '細項'} ($${Number(item.fromAmount || 0).toLocaleString()})</div>
+                                    </div>
+                                    <div class="bg-emerald-50/90 p-2.5 rounded-lg border border-emerald-200/80 space-y-1">
+                                        <div><strong class="text-emerald-900">流入子計畫名稱：</strong> <span class="text-emerald-950 font-bold">${item.toSubProject || '未記錄'}</span></div>
+                                        <div><strong class="text-emerald-800">流入細項：</strong> ${item.toDetail || '細項'} ($${Number(item.toAmount || 0).toLocaleString()})</div>
+                                    </div>
+                                    <div class="pt-0.5"><strong>審核主管：</strong> ${item.approverName || '未指定'}</div>
                                     ${item.supervisorComment ? `<div class="mt-1 pt-1 border-t border-purple-200 text-purple-900"><strong>主管意見：</strong> ${item.supervisorComment}</div>` : ''}
                                 </div>
                             </div>
